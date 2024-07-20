@@ -1,31 +1,117 @@
 [versions]
-agp = "8.5.0"
-kotlin = "1.9.0"
-coreKtx = "1.13.1"
-junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.3"
-activityCompose = "1.9.0"
-composeBom = "2024.04.01"
-
-[libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+# Kotlin Dependencies
+kotlinVersion = "1.7.10"
+coroutinesAndroidVersion = "1.6.3"
+# AndroidxDependencies
+coreKtxVersion = "1.8.0"
+appCompatVersion = "1.4.2"
+constraintLayoutVersion = "2.1.4"
+activityKtxVersion = "1.5.1"
+fragmentKtxVersion = "1.5.1"
+workKtxVersion = "2.7.1"
+lifecycleVersion = "2.5.1"
+multiDexVersion = "2.0.1"
+legacyVersion = "1.0.0"
+cardViewVersion = "1.0.0"
+# TestDependencies
+junitVersion = "4.12"
+androidTestVersion = "1.1.5"
+espressoVersion = "3.5.1"
+# MaterialDesignDependencies
+materialDesignVersion = "1.5.0"
+# ThirdPartyDependencies
+gsonVersion = "2.9.0"
+retrofitVersion = "2.9.0"
+okHttpVersion = "4.9.3"
+glideVersion = "4.13.2"
+# KaptDependencies
+hiltVersion = "2.42"
+# Configuration
+gradleVersion = "7.2.1"
+# Compose
+composeBom = "2023.01.00"
+paging = "3.1.1"
+pagingCompose = "1.0.0-alpha14"
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "gradleVersion" }
+android-library = { id = "com.android.library", version.ref = "gradleVersion" }
+android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 
+[libraries]
+# use in build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "gradleVersion" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinVersion" }
+
+# KotlinDependencies
+kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinVersion" }
+coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesAndroidVersion" }
+
+# AndroidxDependencies
+coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
+appCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appCompatVersion" }
+constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintLayoutVersion" }
+activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtxVersion" }
+fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtxVersion" }
+work = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workKtxVersion" }
+lifecycle-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleVersion" }
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleVersion" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
+multi-dex = { group = "androidx.multidex", name = "multidex", version.ref = "multiDexVersion" }
+paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+legacy = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacyVersion" }
+card-view = { group = "androidx.cardview", name = "cardview", version.ref = "cardViewVersion" }
+
+# Test Dependencies
+jUnit = { group = "junit", name = "junit", version.ref = "junitVersion" }
+android-test = { group = "androidx.test.ext", name = "junit", version.ref = "androidTestVersion" }
+espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoVersion" }
+
+# MaterialDesignDependencies
+material-design = { group = "com.google.android.material", name = "material", version.ref = "materialDesignVersion" }
+
+# hilt
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltVersion" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hiltVersion" }
+
+# retrofit
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gsonVersion" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
+retrofitGsonConverter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitVersion" }
+okHttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttpVersion" }
+okHttpLoggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okHttpVersion" }
+
+# image
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glideVersion" }
+
+# Compose
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-material2 = { group = "androidx.compose.material", name = "material" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-debug-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+
+[bundles]
+kotlin = ["kotlin", "coroutines"]
+androidx = [
+    "coreKtx", "appCompat", "constraint-layout",
+    "activity", "fragment", "work", "lifecycle-ktx",
+    "lifecycle-livedata-ktx", "lifecycle-viewmodel-ktx", "multi-dex",
+    "paging", "legacy", "card-view"
+]
+unit-test = ["jUnit"]
+android-test = ["jUnit", "android-test", "espresso"]
+material-design = ["material-design"]
+image = ["glide"]
+retrofit = [
+    "gson", "retrofit",
+    "retrofitGsonConverter", "okHttp",
+    "okHttpLoggingInterceptor"
+]
+compose = [
+    "compose-material3", "compose-material2",
+    "compose-ui", "compose-preview",
+    "compose-debug-ui-tooling"
+]
