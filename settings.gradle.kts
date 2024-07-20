@@ -22,3 +22,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "HyusikMatju"
 include(":app")
+
+// core
+include(":core:ui")
+include(":core:domain")
+include(":core:data")
+include(":core:network")

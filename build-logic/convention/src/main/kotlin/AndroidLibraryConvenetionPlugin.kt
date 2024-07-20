@@ -38,7 +38,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 "implementation"(libs.findBundle("kotlin").get())
                 "implementation"(libs.findBundle("androidx").get())
                 "implementation"(libs.findBundle("unit.test").get())
-                "implementation"(libs.findBundle("third-parties").get())
                 "androidTestImplementation"(libs.findBundle("android.test").get())
             }
         }
