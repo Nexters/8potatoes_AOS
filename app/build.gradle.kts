@@ -7,3 +7,8 @@ plugins {
 android {
     namespace = "com.eight_potato.hyusikmatju"
 }
+
+dependencies {
+    implementation(project(":feature:search"))
+    implementation(project(":core:designsystem"))
+}

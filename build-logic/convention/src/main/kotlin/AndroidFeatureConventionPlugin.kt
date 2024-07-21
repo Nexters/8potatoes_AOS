@@ -11,14 +11,18 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("passorder.android.library")
-                apply("passorder.android.hilt")
+                apply("hyusik.android.library")
+                apply("hyusik.android.hilt")
+                apply("hyusik.android.library.compose")
             }
 
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
+                "implementation"(project(":core:ui"))
+                "implementation"(project(":core:designsystem"))
+                "implementation"(project(":core:domain"))
+
                 "implementation"(libs.findBundle("material.design").get())
-                "implementation"(libs.findBundle("third.parties").get())
                 "implementation"(libs.findBundle("image").get())
             }
         }
