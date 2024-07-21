@@ -1,4 +1,4 @@
-package com.eight_potato.hyusikmatju.ui.theme
+package com.eight_potato.designsystem.theme
 
 import android.app.Activity
 import android.os.Build
