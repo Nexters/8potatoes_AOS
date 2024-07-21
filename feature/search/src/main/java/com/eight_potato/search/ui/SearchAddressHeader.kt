@@ -26,7 +26,6 @@ internal fun SearchAddressHeader(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp, horizontal = 20.dp)
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
@@ -36,7 +35,7 @@ internal fun SearchAddressHeader(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .clickable { onClickCloseButton() }
-                .padding(12.dp),
+                .padding(16.dp),
             imageVector = Icons.Default.Close,
             contentDescription = "위치 설정 종료"
         )
