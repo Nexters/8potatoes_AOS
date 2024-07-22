@@ -4,5 +4,5 @@ plugins {
 }
 
 android {
-    namespace = "com.eight_potato.domain"
+    namespace = "com.eight_potato.common"
 }
