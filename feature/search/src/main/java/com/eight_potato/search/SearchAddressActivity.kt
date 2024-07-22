@@ -32,6 +32,7 @@ class SearchAddressActivity : BaseActivity() {
 
     @Composable
     override fun Body() {
+        val address = viewModel.address.collectAsState()
         val keyword = viewModel.keyword.collectAsState()
         Scaffold(
             topBar = {
@@ -50,8 +51,8 @@ class SearchAddressActivity : BaseActivity() {
                 )
                 CurrentPositionButton {}
                 SearchAddressList(
-                    keyword = "홍대",
-                    addresses = TEST_ADDRESS,
+                    keyword = keyword.value,
+                    addresses = address.value,
                     onClickAddressItem = {}
                 )
             }
