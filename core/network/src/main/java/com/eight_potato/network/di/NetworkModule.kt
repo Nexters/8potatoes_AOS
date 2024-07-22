@@ -32,6 +32,7 @@ object RetrofitModule {
         okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
+            .baseUrl("https://apis.openapi.sk.com/tmap/")
             .client(okHttpClient)
             .addConverterFactory(converter)
             .build()

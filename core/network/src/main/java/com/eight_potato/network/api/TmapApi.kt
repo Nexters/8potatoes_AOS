@@ -12,12 +12,12 @@ import retrofit2.http.Query
 interface TmapApi {
     /**
      * 주소 검색
-     * [GET] https://apis.openapi.sk.com/tmap/pois
+     * [GET] pois
      */
-    @GET("https://apis.openapi.sk.com/tmap/pois")
+    @GET("pois")
     suspend fun getAddress(
         @Header("appKey") appKey: String = "RhcUc25iEc3UR1jX16bUo9AtX7RS3qIT1scW2ahH",
-        @Query("searchKeyword") keyword: String
+        @Query("searchKeyword", encoded = true) keyword: String
     ): Response<AddressResponse>
 
 }
