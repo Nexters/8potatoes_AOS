@@ -2,6 +2,7 @@ package com.eight_potato.ui.base
 
 import android.app.Activity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import com.eight_potato.designsystem.theme.HyusikMatjuTheme
@@ -24,6 +25,10 @@ abstract class BaseActivity : AppCompatActivity() {
                 content = { Body() }
             )
         }
+    }
+
+    fun toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     @Composable

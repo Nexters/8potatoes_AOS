@@ -1,4 +1,4 @@
-package com.eight_potato.search.ui
+package com.eight_potato.ui.header
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -7,45 +7,36 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.eight_potato.designsystem.theme.HyusikMatjuTheme
 
 /**
- * 주소 검색 Header
+ * 공통 Header
  */
 @Composable
-internal fun SearchAddressHeader(
+fun SingleTextHeader(
     modifier: Modifier = Modifier,
+    title: String,
     onClickCloseButton: () -> Unit
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = "위치 설정"
+            text = title
         )
         Icon(
             modifier = Modifier
-                .align(Alignment.CenterEnd)
+                .align(Alignment.CenterStart)
                 .clickable { onClickCloseButton() }
                 .padding(16.dp),
-            imageVector = Icons.Default.Close,
-            contentDescription = "위치 설정 종료"
+            imageVector = Icons.Default.KeyboardArrowLeft,
+            contentDescription = "이전화면으로 이동"
         )
-    }
-}
-
-@Preview
-@Composable
-private fun SearchAddressHeaderPreview() {
-    HyusikMatjuTheme {
-        SearchAddressHeader {}
     }
 }

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".HyusikApplication"
@@ -15,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HyusikMatju"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="puhwn9r3kx" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

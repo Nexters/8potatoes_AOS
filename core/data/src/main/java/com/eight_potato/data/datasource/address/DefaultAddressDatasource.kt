@@ -1,6 +1,7 @@
 package com.eight_potato.data.datasource.address
 
 import com.eight_potato.data.model.address.AddressData
+import com.eight_potato.data.model.address.SimpleAddressData
 import com.eight_potato.data.model.address.toData
 import com.eight_potato.data.util.ApiCallUtil
 import com.eight_potato.network.api.TmapApi
@@ -23,6 +24,22 @@ class DefaultAddressDatasource @Inject constructor(
 
                 tmapApi.getAddress(keyword = encodedKeyword)
             }.toData().pois
+        }
+    }
+
+    // 좌표에 맞는 주소 검색
+    override suspend fun getAddressByPoi(
+        lat: Double,
+        lon: Double
+    ): Result<SimpleAddressData> {
+        return runCatching {
+            val reulst = ApiCallUtil {
+                tmapApi.getAddressByPoi(
+                    lat = lat.toFloat(), lon = lon.toFloat()
+                )
+            }
+            println(reulst)
+            reulst.toData()
         }
     }
 }
