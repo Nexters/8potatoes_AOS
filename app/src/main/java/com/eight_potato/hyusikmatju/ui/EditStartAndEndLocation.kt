@@ -1,20 +1,19 @@
 package com.eight_potato.hyusikmatju.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import com.eight_potato.designsystem.divider.HorizontalDivider
 import com.eight_potato.ui.model.address.AddressUiModel
@@ -26,7 +25,10 @@ import com.eight_potato.ui.model.address.AddressUiModel
 internal fun EditStartAndEndLocation(
     modifier: Modifier = Modifier,
     start: AddressUiModel? = null,
-    end: AddressUiModel? = null
+    end: AddressUiModel? = null,
+    onClickStartAddress: () -> Unit,
+    onClickEndAddress: () -> Unit,
+    onClickReverse: () -> Unit
 ) {
     Layout(
         modifier = modifier.padding(horizontal = 20.dp, vertical = 10.dp),
@@ -42,7 +44,10 @@ internal fun EditStartAndEndLocation(
                 contentDescription = "start"
             )
             Image(
-                modifier = Modifier.layoutId("reverse"),
+                modifier = Modifier
+                    .layoutId("reverse")
+                    .clickable { onClickReverse() }
+                    .padding(16.dp),
                 painter = painterResource(id = com.eight_potato.designsystem.R.drawable.ic_reverse),
                 contentDescription = "start"
             )
@@ -50,14 +55,16 @@ internal fun EditStartAndEndLocation(
                 modifier = Modifier.layoutId("start"),
                 title = "출발지 입력",
                 desc = "어디서 출발하세요?",
-                address = start
+                address = start,
+                onClickAddress = onClickStartAddress
             )
             HorizontalDivider(modifier = Modifier.layoutId("divider"))
             InputLocationItem(
                 modifier = Modifier.layoutId("end"),
-                title = "출발지 입력",
-                desc = "어디서 출발하세요?",
-                address = end
+                title = "도착지 입력",
+                desc = "어디까지 가세요?",
+                address = end,
+                onClickAddress = onClickEndAddress
             )
         }
     ) { measurable, constraints ->
@@ -72,8 +79,8 @@ internal fun EditStartAndEndLocation(
         val icEndHeight = icEnd?.height ?: 0
 
         val frontPadding = (20).dp.roundToPx()
-        val endPadding = (16).dp.roundToPx()
-        val extraWidth = constraints.maxWidth - reverseWidth - icStartWidth - frontPadding - endPadding
+        val extraWidth =
+            constraints.maxWidth - reverseWidth - icStartWidth - frontPadding
         val newConstraints = constraints.copy(
             minWidth = 0, maxWidth = kotlin.math.max(0, extraWidth)
         )
@@ -107,10 +114,14 @@ private fun InputLocationItem(
     modifier: Modifier = Modifier,
     title: String,
     desc: String,
-    address: AddressUiModel?
+    address: AddressUiModel?,
+    onClickAddress: () -> Unit
 ) {
     Column(
-        modifier = modifier.padding(vertical = 22.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClickAddress() }
+            .padding(vertical = 22.dp)
     ) {
         Text(
             text = title,

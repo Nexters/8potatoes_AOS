@@ -61,6 +61,7 @@ class CurrentLocationActivity : BaseActivity() {
                         setResult(RESULT_OK, intent.apply {
                             putExtra("location", viewModel.currentLocation)
                         })
+                        finish()
                     },
                     backgroundColor = Colors.Black
                 ) {

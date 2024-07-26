@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -34,7 +35,7 @@ internal fun SearchAddressList(
     onClickAddressItem: (AddressUiModel) -> Unit
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             modifier = Modifier.padding(vertical = 20.dp, horizontal = 16.dp),
@@ -42,6 +43,7 @@ internal fun SearchAddressList(
         )
         HorizontalDivider()
         LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 40.dp, horizontal = 20.dp),
             verticalArrangement = Arrangement.spacedBy(40.dp)
         ) {
@@ -62,7 +64,9 @@ private fun SearchAddressListItem(
     onClickAddressItem: (AddressUiModel) -> Unit
 ) {
     Column(
-        modifier = modifier.clickable { onClickAddressItem(address) }
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClickAddressItem(address) }
     ) {
         Text(text = address.name)
         Spacer(modifier = Modifier.height(12.dp))

@@ -68,7 +68,7 @@ class SearchAddressActivity : BaseActivity() {
                 SearchAddressList(
                     keyword = keyword.value,
                     addresses = address.value,
-                    onClickAddressItem = {}
+                    onClickAddressItem = ::onBackWithLocation
                 )
             }
         }
@@ -78,13 +78,17 @@ class SearchAddressActivity : BaseActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == Activity.RESULT_OK) {
-            it.data?.getSerializable<AddressUiModel>("")?.let { address ->
-                setResult(RESULT_OK, intent.apply {
-                    putExtra("location", address)
-                })
-                finish()
+            it.data?.getSerializable<AddressUiModel>("location")?.let { address ->
+                onBackWithLocation(address)
             }
         }
+    }
+
+    private fun onBackWithLocation(address: AddressUiModel) {
+        setResult(RESULT_OK, intent.apply {
+            putExtra("location", address)
+        })
+        finish()
     }
 }
 
