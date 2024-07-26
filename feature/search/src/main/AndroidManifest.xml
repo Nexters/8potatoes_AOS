@@ -3,5 +3,6 @@
 
     <application>
         <activity android:name=".SearchAddressActivity"/>
+        <activity android:name=".location.CurrentLocationActivity"/>
     </application>
 </manifest>
