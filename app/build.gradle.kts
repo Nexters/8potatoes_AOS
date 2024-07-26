@@ -11,6 +11,7 @@ android {
 dependencies {
     implementation(project(":feature:search"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:ui"))
 
     /**
      * Clean Architecture

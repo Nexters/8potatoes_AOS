@@ -33,13 +33,11 @@ class DefaultAddressDatasource @Inject constructor(
         lon: Double
     ): Result<SimpleAddressData> {
         return runCatching {
-            val reulst = ApiCallUtil {
+            ApiCallUtil {
                 tmapApi.getAddressByPoi(
                     lat = lat.toFloat(), lon = lon.toFloat()
                 )
-            }
-            println(reulst)
-            reulst.toData()
+            }.toData()
         }
     }
 }

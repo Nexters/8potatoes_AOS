@@ -1,6 +1,8 @@
 package com.eight_potato.search
 
+import android.app.Activity
 import android.content.Intent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +26,9 @@ import com.eight_potato.designsystem.input.HyusikOutlinedTextField
 import com.eight_potato.search.location.CurrentLocationActivity
 import com.eight_potato.search.ui.SearchAddressList
 import com.eight_potato.ui.base.BaseActivity
+import com.eight_potato.ui.ext.getSerializable
 import com.eight_potato.ui.header.SingleTextHeader
+import com.eight_potato.ui.model.address.AddressUiModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,7 +58,7 @@ class SearchAddressActivity : BaseActivity() {
                     onClear = { viewModel.changeKeyword("") }
                 )
                 CurrentPositionButton {
-                    startActivity(
+                    searchCurrentLocationResult.launch(
                         Intent(
                             this@SearchAddressActivity,
                             CurrentLocationActivity::class.java
@@ -66,6 +70,19 @@ class SearchAddressActivity : BaseActivity() {
                     addresses = address.value,
                     onClickAddressItem = {}
                 )
+            }
+        }
+    }
+
+    private val searchCurrentLocationResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            it.data?.getSerializable<AddressUiModel>("")?.let { address ->
+                setResult(RESULT_OK, intent.apply {
+                    putExtra("location", address)
+                })
+                finish()
             }
         }
     }
