@@ -1,7 +1,7 @@
 package com.eight_potato.data.model.address
 
 import com.eight_potato.domain.model.address.AddressModel
-import com.eight_potato.network.model.response.AddressResponse
+import com.eight_potato.network.model.response.TmapAddressResponse
 
 /**
  * 주소 검색 결과 Response
@@ -22,7 +22,7 @@ data class AddressData(
     )
 }
 
-fun AddressResponse.toData(): AddressData {
+fun TmapAddressResponse.toData(): AddressData {
     return AddressData(
         totalCount = searchPoiInfo.totalCount,
         count = searchPoiInfo.count,

@@ -1,6 +1,7 @@
 package com.eight_potato.network.api
 
-import com.eight_potato.network.model.response.AddressResponse
+import com.eight_potato.network.model.response.TmapAddressResponse
+import com.eight_potato.network.model.response.TmapGeoAddressResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -18,6 +19,17 @@ interface TmapApi {
     suspend fun getAddress(
         @Header("appKey") appKey: String = "RhcUc25iEc3UR1jX16bUo9AtX7RS3qIT1scW2ahH",
         @Query("searchKeyword", encoded = true) keyword: String
-    ): Response<AddressResponse>
+    ): Response<TmapAddressResponse>
 
+    /**
+     * 좌표를 통해 주소 검색
+     * [GET] geo/reversegeocoding
+     */
+    @GET("geo/reversegeocoding")
+    suspend fun getAddressByPoi(
+        @Header("appKey") appKey: String = "RhcUc25iEc3UR1jX16bUo9AtX7RS3qIT1scW2ahH",
+        @Query("addressType") addressType: String = "A10",
+        @Query("lat") lat: Float, // 경도
+        @Query("lon") lon: Float // 위도
+    ): Response<TmapGeoAddressResponse>
 }

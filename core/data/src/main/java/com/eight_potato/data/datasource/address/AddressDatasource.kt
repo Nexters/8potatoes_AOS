@@ -1,6 +1,7 @@
 package com.eight_potato.data.datasource.address
 
 import com.eight_potato.data.model.address.AddressData
+import com.eight_potato.data.model.address.SimpleAddressData
 
 /**
  * 주소와 관련된 Datasource
@@ -13,4 +14,14 @@ interface AddressDatasource {
     suspend fun getAddress(
         keyword: String
     ): Result<List<AddressData.Poi>>
+
+    /**
+     * 좌표를 통한 주소 검색
+     * @param lat 경도
+     * @param lon 위도
+     */
+    suspend fun getAddressByPoi(
+        lat: Double,
+        lon: Double
+    ): Result<SimpleAddressData>
 }

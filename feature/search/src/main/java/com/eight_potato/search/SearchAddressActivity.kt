@@ -1,5 +1,8 @@
 package com.eight_potato.search
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,10 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.eight_potato.designsystem.input.HyusikOutlinedTextField
-import com.eight_potato.search.ui.SearchAddressHeader
+import com.eight_potato.search.location.CurrentLocationActivity
 import com.eight_potato.search.ui.SearchAddressList
 import com.eight_potato.ui.base.BaseActivity
-import com.eight_potato.ui.model.address.TEST_ADDRESS
+import com.eight_potato.ui.ext.getSerializable
+import com.eight_potato.ui.header.SingleTextHeader
+import com.eight_potato.ui.model.address.AddressUiModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,7 +41,10 @@ class SearchAddressActivity : BaseActivity() {
         val keyword = viewModel.keyword.collectAsState()
         Scaffold(
             topBar = {
-                SearchAddressHeader { finish() }
+                SingleTextHeader(
+                    title = "위치 설정",
+                    onClickCloseButton = { finish() }
+                )
             }
         ) {
             Column(
@@ -49,14 +57,38 @@ class SearchAddressActivity : BaseActivity() {
                     onValueChanged = viewModel::changeKeyword,
                     onClear = { viewModel.changeKeyword("") }
                 )
-                CurrentPositionButton {}
+                CurrentPositionButton {
+                    searchCurrentLocationResult.launch(
+                        Intent(
+                            this@SearchAddressActivity,
+                            CurrentLocationActivity::class.java
+                        )
+                    )
+                }
                 SearchAddressList(
                     keyword = keyword.value,
                     addresses = address.value,
-                    onClickAddressItem = {}
+                    onClickAddressItem = ::onBackWithLocation
                 )
             }
         }
+    }
+
+    private val searchCurrentLocationResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            it.data?.getSerializable<AddressUiModel>("location")?.let { address ->
+                onBackWithLocation(address)
+            }
+        }
+    }
+
+    private fun onBackWithLocation(address: AddressUiModel) {
+        setResult(RESULT_OK, intent.apply {
+            putExtra("location", address)
+        })
+        finish()
     }
 }
 

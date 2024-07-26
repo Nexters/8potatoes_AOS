@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * 주소 검색 결과 Response
  */
-data class AddressResponse(
+data class TmapAddressResponse(
     @SerializedName("searchPoiInfo")
     val searchPoiInfo: SearchPoiInfo
 ) {
