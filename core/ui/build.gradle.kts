@@ -1,6 +1,7 @@
 plugins {
     id("hyusik.android.library")
     id("hyusik.android.library.compose")
+    id("hyusik.android.hilt")
 }
 
 android {

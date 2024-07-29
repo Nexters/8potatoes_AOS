@@ -10,6 +10,8 @@ android {
 
 dependencies {
     implementation(project(":feature:search"))
+    implementation(project(":feature:rest"))
+
     implementation(project(":core:designsystem"))
     implementation(project(":core:ui"))
 

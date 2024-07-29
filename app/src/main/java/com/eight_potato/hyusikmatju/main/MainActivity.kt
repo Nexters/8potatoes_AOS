@@ -23,19 +23,23 @@ import androidx.compose.ui.unit.sp
 import com.eight_potato.designsystem.button.HyusikButton
 import com.eight_potato.designsystem.theme.Colors
 import com.eight_potato.hyusikmatju.ui.EditStartAndEndLocation
+import com.eight_potato.rest.list.RestListActivity
 import com.eight_potato.search.SearchAddressActivity
 import com.eight_potato.ui.base.BaseActivity
+import com.eight_potato.ui.direction.DirectionActivity
+import com.eight_potato.ui.direction.DirectionViewModel
 import com.eight_potato.ui.ext.getSerializable
 import com.eight_potato.ui.header.SingleTextHeader
 import com.eight_potato.ui.model.address.AddressUiModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
-    private val viewModel: MainViewModel by viewModels()
-
+class MainActivity : DirectionActivity() {
     @Composable
     override fun Body() {
+        val start = viewModel.start.collectAsState()
+        val end = viewModel.end.collectAsState()
+
         Scaffold(
             topBar = {
                 SingleTextHeader(
@@ -48,16 +52,19 @@ class MainActivity : BaseActivity() {
                         .padding(horizontal = 20.dp)
                         .padding(top = 20.dp, bottom = 28.dp)
                         .fillMaxWidth(),
-                    onClick = {},
+                    onClick = {
+                        RestListActivity.start(
+                            context = this@MainActivity,
+                            start = start.value,
+                            end = end.value
+                        )
+                    },
                     backgroundColor = Colors.Black
                 ) {
                     Text(text = "이 위치로 주소 등록")
                 }
             }
         ) {
-            val start = viewModel.start.collectAsState()
-            val end = viewModel.end.collectAsState()
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -92,31 +99,4 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun moveToSearchScreenForStart() {
-        startLocationLauncher.launch(Intent(this, SearchAddressActivity::class.java))
-    }
-
-    private fun moveToSearchScreenForEnd() {
-        endLocationLauncher.launch(Intent(this, SearchAddressActivity::class.java))
-    }
-
-    private val startLocationLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            it.data?.getSerializable<AddressUiModel>("location")?.let { address ->
-                viewModel.setStart(address)
-            }
-        }
-    }
-
-    private val endLocationLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            it.data?.getSerializable<AddressUiModel>("location")?.let { address ->
-                viewModel.setEnd(address)
-            }
-        }
-    }
 }

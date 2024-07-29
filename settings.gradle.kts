@@ -27,6 +27,7 @@ include(":app")
 
 // feature
 include(":feature:search")
+include(":feature:rest")
 
 // core
 include(":core:ui")
