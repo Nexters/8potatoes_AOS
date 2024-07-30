@@ -14,3 +14,7 @@ data class PoiData(
 fun PoiData.toModel(): PoiModel {
     return PoiModel(lat, lon)
 }
+
+fun PoiModel.toData(): PoiData {
+    return PoiData(lat, lon)
+}
