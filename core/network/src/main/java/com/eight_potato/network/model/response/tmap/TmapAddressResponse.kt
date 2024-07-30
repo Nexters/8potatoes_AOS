@@ -1,4 +1,4 @@
-package com.eight_potato.network.model.response
+package com.eight_potato.network.model.response.tmap
 
 import com.google.gson.annotations.SerializedName
 
