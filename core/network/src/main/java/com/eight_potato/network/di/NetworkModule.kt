@@ -10,8 +10,10 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
+import retrofit2.Converter.Factory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -19,20 +21,44 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideTmapApi(retrofit: Retrofit): TmapApi = retrofit.create(TmapApi::class.java)
+    fun provideTmapApi(
+        @TmapRetrofit retrofit: Retrofit
+    ): TmapApi = retrofit.create(TmapApi::class.java)
 }
+
+@Qualifier
+annotation class TmapRetrofit
+@Qualifier
+annotation class NaverRetrofit
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
     @Provides
     @Singleton
-    fun provideRetrofit(
+    @TmapRetrofit
+    // Tmap API를 위한 Retrofit
+    fun provideTmapRetrofit(
         converter: Converter.Factory,
         okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://apis.openapi.sk.com/tmap/")
+            .client(okHttpClient)
+            .addConverterFactory(converter)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @NaverRetrofit
+    // Naver API를 위한 Retrofit
+    fun provideNaverRetrofit(
+        converter: Factory,
+        okHttpClient: OkHttpClient
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://naveropenapi.apigw.ntruss.com/")
             .client(okHttpClient)
             .addConverterFactory(converter)
             .build()
