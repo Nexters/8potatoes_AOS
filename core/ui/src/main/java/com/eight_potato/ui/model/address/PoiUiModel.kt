@@ -1,5 +1,6 @@
 package com.eight_potato.ui.model.address
 
+import com.eight_potato.domain.model.address.PoiModel
 import java.io.Serializable
 
 /**
@@ -11,3 +12,7 @@ data class PoiUiModel(
 ): Serializable
 
 val TEST_POI = PoiUiModel(0f, 0f)
+
+fun PoiModel.toUiModel(): PoiUiModel {
+    return PoiUiModel(lat, lon)
+}

@@ -1,6 +1,7 @@
 package com.eight_potato.network.di
 
 import androidx.multidex.BuildConfig
+import com.eight_potato.network.api.NaverApi
 import com.eight_potato.network.api.TmapApi
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -24,10 +25,17 @@ object NetworkModule {
     fun provideTmapApi(
         @TmapRetrofit retrofit: Retrofit
     ): TmapApi = retrofit.create(TmapApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideNaverApi(
+        @NaverRetrofit retrofit: Retrofit
+    ): NaverApi = retrofit.create(NaverApi::class.java)
 }
 
 @Qualifier
 annotation class TmapRetrofit
+
 @Qualifier
 annotation class NaverRetrofit
 

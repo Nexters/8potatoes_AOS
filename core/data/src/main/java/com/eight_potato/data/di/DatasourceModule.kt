@@ -2,6 +2,8 @@ package com.eight_potato.data.di
 
 import com.eight_potato.data.datasource.address.AddressDatasource
 import com.eight_potato.data.datasource.address.DefaultAddressDatasource
+import com.eight_potato.data.datasource.direction.DefaultDirectionDatasource
+import com.eight_potato.data.datasource.direction.DirectionDatasource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,4 +18,10 @@ interface DatasourceModule {
     fun bindTmapDatasource(
         tmapDatasource: DefaultAddressDatasource
     ): AddressDatasource
+
+    @Binds
+    @Singleton
+    fun bindDirectionDatasource(
+        directionDatasource: DefaultDirectionDatasource
+    ): DirectionDatasource
 }
