@@ -43,9 +43,9 @@ data class TmapAddressResponse(
 
     data class NewAddress(
         @SerializedName("centerLat")
-        val lat: Float, // 경도
+        val lat: Double, // 경도
         @SerializedName("centerLon")
-        val lon: Float, // 위도
+        val lon: Double, // 위도
         @SerializedName("fullAddressRoad")
         val fullAddress: String // 도로명 주소
     )

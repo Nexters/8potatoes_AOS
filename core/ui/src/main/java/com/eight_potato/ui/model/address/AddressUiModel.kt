@@ -13,15 +13,6 @@ data class AddressUiModel(
     val poi: PoiUiModel? // 위치 좌표 정보
 ) : Serializable
 
-val TEST_ADDRESS = (0..10).map {
-    AddressUiModel(
-        id = "$it",
-        name = "교보문고 광화문점 $it",
-        roadAddr = "서울 종로구 종로 1",
-        poi = TEST_POI
-    )
-}
-
 fun AddressModel.toUiModel(): AddressUiModel {
     return AddressUiModel(
         id = id,

@@ -22,7 +22,7 @@ data class DirectionResponse(
     // 특정 option code 의 경로 정보
     data class Route(
         @SerializedName("path")
-        val path: List<FloatArray>, // 경로를 구성 하는 좌표열
+        val path: List<DoubleArray>, // 경로를 구성 하는 좌표열
         @SerializedName("section")
         val section: Section // 해당 경로를 구성 하는 주요 도로에 관한 정보열
     )

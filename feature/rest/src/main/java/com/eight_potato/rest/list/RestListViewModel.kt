@@ -2,11 +2,17 @@ package com.eight_potato.rest.list
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.eight_potato.domain.usecase.direction.GetDirectionUseCase
 import com.eight_potato.ui.model.address.AddressUiModel
+import com.eight_potato.ui.model.address.PoiUiModel
+import com.eight_potato.ui.model.address.toModel
+import com.eight_potato.ui.model.address.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -14,6 +20,24 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RestListViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    private val getDirectionUseCase: GetDirectionUseCase
 ) : ViewModel() {
+    private val _path = MutableStateFlow<List<PoiUiModel>>(emptyList())
+    val path: StateFlow<List<PoiUiModel>> = _path.asStateFlow()
+
+    fun getDirection(
+        start: AddressUiModel?,
+        end: AddressUiModel?
+    ) {
+        viewModelScope.launch {
+            val startPoi = start?.poi ?: return@launch
+            val endPoi = end?.poi ?: return@launch
+            getDirectionUseCase(
+                start = startPoi.toModel(),
+                end = endPoi.toModel()
+            ).onSuccess {
+                _path.value = it.path.map { poi -> poi.toUiModel() }
+            }
+        }
+    }
 }

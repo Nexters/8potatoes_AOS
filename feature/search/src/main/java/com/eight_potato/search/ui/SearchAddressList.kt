@@ -16,13 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eight_potato.designsystem.chip.HyusikChip
 import com.eight_potato.designsystem.divider.HorizontalDivider
-import com.eight_potato.designsystem.theme.HyusikMatjuTheme
 import com.eight_potato.ui.model.address.AddressUiModel
-import com.eight_potato.ui.model.address.TEST_ADDRESS
 
 /**
  * 위치 검색 결과 리스트
@@ -79,17 +76,5 @@ private fun SearchAddressListItem(
             Spacer(modifier = Modifier.width(12.dp))
             Text(text = address.roadAddr)
         }
-    }
-}
-
-@Preview
-@Composable
-private fun SearchAddressListPreview() {
-    HyusikMatjuTheme {
-        SearchAddressList(
-            keyword = "홍대",
-            addresses = TEST_ADDRESS,
-            onClickAddressItem = {}
-        )
     }
 }
