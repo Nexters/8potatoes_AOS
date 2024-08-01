@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.eight_potato.rest.detail.RestStopDetailActivity
 import com.eight_potato.rest.list.ui.RestListBottomSheet
 import com.eight_potato.rest.list.ui.RestListHeader
 import com.eight_potato.ui.direction.DirectionActivity
@@ -61,7 +62,12 @@ class RestListActivity : DirectionActivity() {
                 onClickEnd = ::moveToSearchScreenForEnd
             )
             RestListBottomSheet(
-                modifier = Modifier.align(Alignment.BottomStart)
+                modifier = Modifier.align(Alignment.BottomStart),
+                onClickRestStop = {
+                    startActivity(Intent(
+                        this@RestListActivity,
+                        RestStopDetailActivity::class.java))
+                }
             )
         }
     }
