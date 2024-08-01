@@ -1,7 +1,7 @@
 package com.eight_potato.data.model.address
 
 import com.eight_potato.domain.model.address.AddressModel
-import com.eight_potato.network.model.response.TmapAddressResponse
+import com.eight_potato.network.model.response.tmap.TmapAddressResponse
 
 /**
  * 주소 검색 결과 Response
@@ -16,9 +16,8 @@ data class AddressData(
         val id: String, // 관심 장소 id
         val key: String, // 관심 장소 식별자
         val name: String, // 장소명(시설물 등) 및 업체명
-        val lat: Float?, // 위도
-        val lon: Float?, // 경도
-        val fullAddress: String? // 도로명 주소
+        val fullAddress: String?, // 도로명 주소
+        val poi: PoiData?
     )
 }
 
@@ -33,9 +32,10 @@ fun TmapAddressResponse.toData(): AddressData {
                 id = it.id,
                 key = it.key,
                 name = it.name,
-                lat = address?.lat,
-                lon = address?.lon,
-                fullAddress = address?.fullAddress
+                fullAddress = address?.fullAddress,
+                poi = address?.let { poi ->
+                    PoiData(poi.lat, poi.lon)
+                }
             )
         }
     )
@@ -46,8 +46,7 @@ fun AddressData.Poi.toModel(): AddressModel {
         id = id,
         key = key,
         name = name,
-        lat = lat,
-        lon = lon,
-        fullAddress = fullAddress
+        fullAddress = fullAddress,
+        poi = poi?.toModel()
     )
 }

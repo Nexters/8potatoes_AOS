@@ -1,7 +1,7 @@
 package com.eight_potato.data.model.address
 
 import com.eight_potato.domain.model.address.SimpleAddressModel
-import com.eight_potato.network.model.response.TmapGeoAddressResponse
+import com.eight_potato.network.model.response.tmap.TmapGeoAddressResponse
 
 /**
  * 간단한 내용만 포함하고 있는 주소 정보

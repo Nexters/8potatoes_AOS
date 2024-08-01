@@ -1,7 +1,7 @@
 package com.eight_potato.network.api
 
-import com.eight_potato.network.model.response.TmapAddressResponse
-import com.eight_potato.network.model.response.TmapGeoAddressResponse
+import com.eight_potato.network.model.response.tmap.TmapAddressResponse
+import com.eight_potato.network.model.response.tmap.TmapGeoAddressResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
