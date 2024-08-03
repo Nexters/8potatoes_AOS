@@ -8,6 +8,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 /**
@@ -38,9 +39,9 @@ interface TmapApi {
 
     /**
      * 경로 검색
-     * [GET] routes
+     * [POST] routes
      */
-    @GET("routes")
+    @POST("routes")
     suspend fun getRoutes(
         @Header("appKey") appKey: String = "RhcUc25iEc3UR1jX16bUo9AtX7RS3qIT1scW2ahH",
         @Query("version") apiVersion: Int = 1,

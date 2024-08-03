@@ -20,8 +20,10 @@ data class Feature(
 )
 
 data class Geometry(
+    @SerializedName("type")
+    val type: String,
     @SerializedName("coordinates")
-    val coordinates: List<FloatArray>
+    val coordinates: List<*>
 )
 
 data class Property(

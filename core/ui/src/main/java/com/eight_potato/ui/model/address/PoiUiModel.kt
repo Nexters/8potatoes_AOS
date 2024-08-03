@@ -7,8 +7,8 @@ import java.io.Serializable
  * 위치 좌표 정보
  */
 data class PoiUiModel(
-    val lat: Double, // 위도
-    val lon: Double // 경도
+    val lat: Float, // 위도
+    val lon: Float // 경도
 ) : Serializable
 
 fun PoiModel.toUiModel(): PoiUiModel {

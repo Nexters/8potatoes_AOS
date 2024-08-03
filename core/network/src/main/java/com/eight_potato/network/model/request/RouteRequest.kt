@@ -6,8 +6,6 @@ import com.google.gson.annotations.SerializedName
  * 경로 검색 요청 Body
  */
 data class RouteRequest(
-    @SerializedName("roadType")
-    val roadType: Int, // 출발 지점의 도로 타입
     @SerializedName("startX")
     val startX: Float, // 출발지 경도
     @SerializedName("startY")
