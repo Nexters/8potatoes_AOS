@@ -16,8 +16,8 @@ data class RouteRequest(
     val endX: Float, // 도착지 경도
     @SerializedName("endY")
     val endY: Float, // 도착지 위도
-    @SerializedName("searchOption")
-    val searchOption: Int, // 경로 탐색 옵션
-    @SerializedName("mainRoadInfo")
-    val mainRoadInfo: String = "Y" // 경로상 주요 도로 정보 표출 여부
+    @SerializedName("reqCoordType")
+    val reqCoordType: String = "WGS84GEO",
+    @SerializedName("resCoordType")
+    val resCoordType: String = "WGS84GEO"
 )
