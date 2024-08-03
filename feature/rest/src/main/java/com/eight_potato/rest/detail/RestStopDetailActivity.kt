@@ -17,11 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.eight_potato.designsystem.divider.HorizontalDivider
 import com.eight_potato.rest.detail.ui.RestStopDetailHeader
 import com.eight_potato.rest.detail.ui.RestStopDetailTab
+import com.eight_potato.rest.detail.ui.menu.RestStopMenuScreen
 import com.eight_potato.rest.model.TEST_REST_STOP
 import com.eight_potato.ui.base.BaseActivity
+import com.eight_potato.ui.ext.pxToDp
 import com.eight_potato.ui.header.SingleTextHeader
+import com.eight_potato.ui.model.menu.TEST_MENU
 
 /**
  * 휴게소 상세 화면 Activity
@@ -55,11 +59,27 @@ class RestStopDetailActivity : BaseActivity() {
                         RestStopDetailTab(
                             tab = tab,
                             isCurrentStep = currentTab.value == tab,
-                            shape = if (tab == currentTab.value) tab.selectShape
-                            else tab.unSelectShape,
                             onClickTab = viewModel::changeTab
                         )
                     }
+                }
+                HorizontalDivider(
+                    thickness = (2).pxToDp(this@RestStopDetailActivity),
+                    color = Color(0xFFF4F0EA),
+                )
+                
+                when (currentTab.value) {
+                    RestStopTab.MENU -> {
+                        RestStopMenuScreen(
+                            menu = TEST_MENU.first(),
+                            restStop = restStop,
+                            onClickMoreMenu = {}
+                        )
+                    }
+                    RestStopTab.EXTRA -> {
+
+                    }
+                    RestStopTab.INFO -> {}
                 }
             }
         }
@@ -67,20 +87,11 @@ class RestStopDetailActivity : BaseActivity() {
 
     companion object {
         enum class RestStopTab(
-            val text: String,
-            val selectShape: Shape,
-            val unSelectShape: Shape
+            val text: String
         ) {
-            MENU(
-                "맛있는 먹거리",
-                RoundedCornerShape(topEnd = 20.dp),
-                RoundedCornerShape(bottomEnd = 20.dp)
-            ), // 휴게소 메뉴 정보
-            INFO(
-                "기타 정보",
-                RoundedCornerShape(topStart = 20.dp),
-                RoundedCornerShape(bottomStart = 20.dp)
-            ) // 휴게소 정보
+            MENU( "먹거리"), // 휴게소 메뉴 정보
+            EXTRA("주유 / 주차"), // 주유&주차 정보
+            INFO("기타정보",) // 휴게소 정보
         }
     }
 }

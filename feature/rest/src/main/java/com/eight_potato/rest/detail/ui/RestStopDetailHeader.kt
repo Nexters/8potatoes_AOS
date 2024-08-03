@@ -2,6 +2,7 @@ package com.eight_potato.rest.detail.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,9 +33,9 @@ internal fun RestStopDetailHeader(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            text = "운영시간 ${restStop.operatingTime}  |  ${restStop.state.text}  |  평점 ${restStop.rate}"
-        )
+        Spacer(modifier = Modifier.height(21.dp))
+        Row {
+
+        }
     }
 }

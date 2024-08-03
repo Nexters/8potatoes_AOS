@@ -32,4 +32,14 @@ interface TmapApi {
         @Query("lat") lat: Float, // 경도
         @Query("lon") lon: Float // 위도
     ): Response<TmapGeoAddressResponse>
+
+    /**
+     * 경로 검색
+     * [GET] routes
+     */
+    @GET("routes")
+    suspend fun getRoutes(
+        @Header("appKey") appKey: String = "RhcUc25iEc3UR1jX16bUo9AtX7RS3qIT1scW2ahH",
+        @Query("version") apiVersion: Int = 1,
+    )
 }

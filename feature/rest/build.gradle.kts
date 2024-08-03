@@ -9,4 +9,6 @@ android {
 dependencies {
     implementation(libs.google.services.location)
     implementation(libs.naverMap)
+
+    implementation(project(":core:common"))
 }
