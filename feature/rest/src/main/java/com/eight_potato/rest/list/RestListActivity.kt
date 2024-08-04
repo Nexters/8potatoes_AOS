@@ -2,6 +2,7 @@ package com.eight_potato.rest.list
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.eight_potato.rest.R
 import com.eight_potato.rest.detail.RestStopDetailActivity
 import com.eight_potato.rest.list.ui.RestListBottomSheet
 import com.eight_potato.rest.list.ui.RestListHeader
@@ -30,6 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class RestListActivity : DirectionActivity() {
     private val restListViewModel: RestListViewModel by viewModels()
     private var naverMap: NaverMap? = null
+    private val pathOverlay by lazy { PathOverlay() }
 
     @Composable
     override fun Body() {
@@ -37,12 +40,14 @@ class RestListActivity : DirectionActivity() {
         val end = viewModel.end.collectAsState()
         val path = restListViewModel.path.collectAsState()
 
-        LaunchedEffect (path.value) {
-            val pathOverlay = PathOverlay()
-            path.value.map { (lat, lon) ->
-                LatLng(lat, lon)
-            }.toList()
-            pathOverlay.map = naverMap
+        LaunchedEffect(path.value) {
+            if (path.value.isNotEmpty()) {
+                pathOverlay.coords = path.value.map { (lat, lon) ->
+                    LatLng(lat.toDouble(), lon.toDouble())
+                }.toList()
+                println(path)
+                pathOverlay.map = naverMap
+            }
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -50,6 +55,9 @@ class RestListActivity : DirectionActivity() {
                 modifier = Modifier.fillMaxSize()
             ) {
                 naverMap = it
+//                pathOverlay.width = 60
+                pathOverlay.color = getColor(R.color.main100)
+//                pathOverlay.passedColor = Color.alpha(0xFF7512)
                 restListViewModel.getDirection(start.value, end.value)
             }
             RestListHeader(
@@ -64,9 +72,12 @@ class RestListActivity : DirectionActivity() {
             RestListBottomSheet(
                 modifier = Modifier.align(Alignment.BottomStart),
                 onClickRestStop = {
-                    startActivity(Intent(
-                        this@RestListActivity,
-                        RestStopDetailActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@RestListActivity,
+                            RestStopDetailActivity::class.java
+                        )
+                    )
                 }
             )
         }

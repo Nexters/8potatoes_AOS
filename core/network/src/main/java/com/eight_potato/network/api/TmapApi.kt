@@ -1,10 +1,14 @@
 package com.eight_potato.network.api
 
+import com.eight_potato.network.model.request.RouteRequest
+import com.eight_potato.network.model.response.route.RouteResponse
 import com.eight_potato.network.model.response.tmap.TmapAddressResponse
 import com.eight_potato.network.model.response.tmap.TmapGeoAddressResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 /**
@@ -32,4 +36,15 @@ interface TmapApi {
         @Query("lat") lat: Float, // 경도
         @Query("lon") lon: Float // 위도
     ): Response<TmapGeoAddressResponse>
+
+    /**
+     * 경로 검색
+     * [POST] routes
+     */
+    @POST("routes")
+    suspend fun getRoutes(
+        @Header("appKey") appKey: String = "RhcUc25iEc3UR1jX16bUo9AtX7RS3qIT1scW2ahH",
+        @Query("version") apiVersion: Int = 1,
+        @Body body: RouteRequest
+    ): Response<RouteResponse>
 }
