@@ -41,7 +41,8 @@ import com.eight_potato.ui.toolbar.rememberToolbarState
 internal fun RestListBottomSheet(
     configuration: Configuration = LocalConfiguration.current,
     modifier: Modifier = Modifier,
-    restStops: List<RestStopUiModel> = TEST_REST_STOP
+    restStops: List<RestStopUiModel> = TEST_REST_STOP,
+    onClickRestStop: (RestStopUiModel) -> Unit
 ) {
     val screenHeight = configuration.screenHeightDp
     val lazyListState = rememberLazyListState()
@@ -90,7 +91,7 @@ internal fun RestListBottomSheet(
                 RestStopItem(
                     restStop = item,
                     isLastItem = index == restStops.lastIndex,
-                    onClickRestStop = {}
+                    onClickRestStop = onClickRestStop
                 )
             }
         }
