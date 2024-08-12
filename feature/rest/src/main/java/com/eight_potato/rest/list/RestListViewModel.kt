@@ -36,6 +36,7 @@ class RestListViewModel @Inject constructor(
                 start = startPoi.toModel(),
                 end = endPoi.toModel()
             ).onSuccess {
+                println(it)
                 _path.value = it.path.map { poi -> poi.toUiModel() }
             }.onFailure {
                 println(it)

@@ -19,4 +19,9 @@ object Colors {
     val Gray450 = Color(0xFFFCFCFC)
     val Gray500 = Color(0xFFA8A8A8)
     val Gray600 = Color(0xFFCACACA)
+
+    val Blk60 = Color(0xFF797165)
+
+    val Main50 = Color(0xFFFFBA89)
+    val Main100 = Color(0xFFFF7512)
 }

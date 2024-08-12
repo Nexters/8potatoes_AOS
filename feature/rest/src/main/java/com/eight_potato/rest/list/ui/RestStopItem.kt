@@ -53,19 +53,12 @@ internal fun RestStopItem(
             .clickable { onClickRestStop(restStop) }
             .fillMaxWidth()
             .background(
-                color = Colors.White,
-                shape = RoundedCornerShape(16.dp)
+                color = Color(0xFFFFF1E7),
+                shape = RoundedCornerShape(20.dp)
             )
             .padding(horizontal = 20.dp)
-            .padding(top = 28.dp)
+            .padding(top = 32.dp)
     ) {
-        Text(
-            text = restStop.direction,
-            fontSize = 12.sp,
-            color = Color(0xFFFF7512),
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {

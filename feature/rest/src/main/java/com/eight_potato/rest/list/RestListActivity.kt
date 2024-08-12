@@ -17,11 +17,19 @@ import com.eight_potato.rest.R
 import com.eight_potato.rest.detail.RestStopDetailActivity
 import com.eight_potato.rest.list.ui.RestListBottomSheet
 import com.eight_potato.rest.list.ui.RestListHeader
+import com.eight_potato.rest.model.RestStopUiModel
 import com.eight_potato.ui.direction.DirectionActivity
+import com.eight_potato.ui.ext.dpToPx
 import com.eight_potato.ui.map.NaverMap
 import com.eight_potato.ui.model.address.AddressUiModel
+import com.eight_potato.ui.model.address.PoiUiModel
+import com.eight_potato.ui.model.address.toLatLng
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.geometry.LatLngBounds
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,12 +50,17 @@ class RestListActivity : DirectionActivity() {
 
         LaunchedEffect(path.value) {
             if (path.value.isNotEmpty()) {
-                pathOverlay.coords = path.value.map { (lat, lon) ->
-                    LatLng(lat.toDouble(), lon.toDouble())
-                }.toList()
-                println(path)
-                pathOverlay.map = naverMap
+                setDirectionAndRest(
+                    start = start.value,
+                    end = end.value,
+                    paths = path.value,
+                    restStops = emptyList()
+                )
             }
+        }
+
+        LaunchedEffect(key1 = start.value, key2 = end.value) {
+            restListViewModel.getDirection(start.value, end.value)
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -55,15 +68,14 @@ class RestListActivity : DirectionActivity() {
                 modifier = Modifier.fillMaxSize()
             ) {
                 naverMap = it
-//                pathOverlay.width = 60
                 pathOverlay.color = getColor(R.color.main100)
-//                pathOverlay.passedColor = Color.alpha(0xFF7512)
+                pathOverlay.width = (6).dpToPx(this@RestListActivity)
                 restListViewModel.getDirection(start.value, end.value)
             }
             RestListHeader(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .padding(16.dp),
+                    .padding(20.dp),
                 start = start.value,
                 end = end.value,
                 onClickStart = ::moveToSearchScreenForStart,
@@ -81,6 +93,42 @@ class RestListActivity : DirectionActivity() {
                 }
             )
         }
+    }
+
+    /**
+     * 지도에 경로와 Marker 설정
+     * @param start 춟발 위치
+     * @param end 도착 위치
+     * @param paths 경로
+     * @param restStops 휴게소 위치 정보
+     */
+    private fun setDirectionAndRest(
+        start: AddressUiModel?,
+        end: AddressUiModel?,
+        paths: List<PoiUiModel>,
+        restStops: List<RestStopUiModel>
+    ) {
+        val startPoi = start?.poi?.toLatLng() ?: return
+        val endPoi = end?.poi?.toLatLng() ?: return
+        // 시작 위치 지정
+        startPoi.let {
+            Marker().apply {
+                position = it
+                icon = OverlayImage.fromResource(R.drawable.ic_start_journey)
+            }.also { it.map = naverMap }
+        }
+        // 도착 위치 지정
+        endPoi.let {
+            Marker().apply {
+                position = it
+                icon = OverlayImage.fromResource(R.drawable.ic_end_journey)
+            }.also { it.map = naverMap }
+        }
+        pathOverlay.coords = paths.map { it.toLatLng() }.toList()
+        pathOverlay.map = naverMap
+        // 카메라 위치 변경
+        val bound = LatLngBounds(startPoi.toLatLng(), endPoi.toLatLng())
+        naverMap?.moveCamera(CameraUpdate.fitBounds(bound, 120))
     }
 
     companion object {

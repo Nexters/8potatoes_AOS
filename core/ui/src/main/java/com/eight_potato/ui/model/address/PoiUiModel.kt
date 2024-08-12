@@ -1,6 +1,7 @@
 package com.eight_potato.ui.model.address
 
 import com.eight_potato.domain.model.address.PoiModel
+import com.naver.maps.geometry.LatLng
 import java.io.Serializable
 
 /**
@@ -10,6 +11,9 @@ data class PoiUiModel(
     val lat: Float, // 위도
     val lon: Float // 경도
 ) : Serializable
+
+fun PoiUiModel.toLatLng() =
+    LatLng(lat.toDouble(), lon.toDouble())
 
 fun PoiModel.toUiModel(): PoiUiModel {
     return PoiUiModel(lat, lon)
