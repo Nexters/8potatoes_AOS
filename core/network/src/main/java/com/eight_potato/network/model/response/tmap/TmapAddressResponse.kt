@@ -31,7 +31,19 @@ data class TmapAddressResponse(
         @SerializedName("pkey")
         val key: String, // 관심 장소 식별자
         @SerializedName("name")
-        val name: String, // 장소명(시설물 등) 및 업체명
+        val name: String, // 장소명(시설물 등) 및 업체
+        @SerializedName("upperAddrName")
+        val upperAddrName: String, // 표출 주소 대분류명(시/도)
+        @SerializedName("middleAddrName")
+        val middleAddrName: String, // 표출 주소 중분류명(시/군/구)
+        @SerializedName("lowerAddrName")
+        val lowerAddrName: String, // 표출 주소 소분류명(읍/명/동)
+        @SerializedName("detailAddrName")
+        val detailAddrName: String, // 표출 주소 세분류명
+        @SerializedName("firstNo")
+        val firstNo: String, // 주소 본번
+        @SerializedName("secondNo")
+        val secondNo: String, // 주소 부번
         @SerializedName("newAddressList")
         val address: AddressList, // 도로명 주소
     )

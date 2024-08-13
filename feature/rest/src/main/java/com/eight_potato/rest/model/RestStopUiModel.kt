@@ -22,7 +22,7 @@ data class RestStopUiModel(
 val TEST_REST_STOP = (0..1).map {
     RestStopUiModel(
         id = "$it",
-        direction = "서욻방면",
+        direction = "서울 방향",
         name = "천안 삼거리 휴게소",
         address = "충남 천안시 구성동 171",
         rate = 4.2f,

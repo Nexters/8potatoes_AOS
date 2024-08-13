@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 
 interface Navigator {
-    fun getSearchAddressActivityIntent(
+    fun getCurrentPositionActivity(
         context: Context
     ): Intent
 }

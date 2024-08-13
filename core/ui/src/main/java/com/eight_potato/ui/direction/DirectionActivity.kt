@@ -1,12 +1,9 @@
 package com.eight_potato.ui.direction
 
-import android.app.Activity
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.eight_potato.ui.base.BaseActivity
-import com.eight_potato.ui.ext.getSerializable
-import com.eight_potato.ui.model.address.AddressUiModel
 import com.eight_potato.ui.navigator.Navigator
+import com.eight_potato.ui.search.SearchAddressBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -18,31 +15,21 @@ abstract class DirectionActivity : BaseActivity() {
     lateinit var navigator: Navigator
 
     protected fun moveToSearchScreenForStart() {
-        startLocationLauncher.launch(navigator.getSearchAddressActivityIntent(this))
+        SearchAddressBottomSheet()
+            .onSelectAddress { viewModel.setStart(it) }
+            .show(
+                supportFragmentManager,
+                SearchAddressBottomSheet.SEARCH_ADDRESS_SHEET
+            )
     }
 
     protected fun moveToSearchScreenForEnd() {
-        endLocationLauncher.launch(navigator.getSearchAddressActivityIntent(this))
-    }
-
-    private val startLocationLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            it.data?.getSerializable<AddressUiModel>("location")?.let { address ->
-                viewModel.setStart(address)
-            }
-        }
-    }
-
-    private val endLocationLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            it.data?.getSerializable<AddressUiModel>("location")?.let { address ->
-                viewModel.setEnd(address)
-            }
-        }
+        SearchAddressBottomSheet()
+            .onSelectAddress { viewModel.setEnd(it) }
+            .show(
+                supportFragmentManager,
+                SearchAddressBottomSheet.SEARCH_ADDRESS_SHEET
+            )
     }
 
     companion object {

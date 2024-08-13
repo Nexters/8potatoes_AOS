@@ -1,4 +1,4 @@
-package com.eight_potato.search
+package com.eight_potato.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,7 +27,7 @@ class SearchAddressViewModel @Inject constructor(
     val keyword: StateFlow<String> = _keyword.asStateFlow()
 
     init {
-        _keyword.debounce(1_000)
+        _keyword.debounce(300)
             .onEach { searchAddress(it) }
             .launchIn(viewModelScope)
     }

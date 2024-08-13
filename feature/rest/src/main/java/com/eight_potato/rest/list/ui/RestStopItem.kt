@@ -5,9 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +34,8 @@ import com.eight_potato.designsystem.chip.HyusikChip
 import com.eight_potato.designsystem.divider.HorizontalDivider
 import com.eight_potato.designsystem.theme.Colors
 import com.eight_potato.designsystem.theme.HyusikMatjuTheme
+import com.eight_potato.designsystem.theme.Typo
+import com.eight_potato.rest.R
 import com.eight_potato.rest.model.RestStopUiModel
 import com.eight_potato.rest.model.TEST_REST_STOP
 import com.eight_potato.ui.ext.dpToPx
@@ -67,37 +71,57 @@ internal fun RestStopItem(
             ) {
                 Text(
                     text = restStop.name,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    style = Typo.HeadB18
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        modifier = Modifier.size(12.dp),
-                        painter = painterResource(id = com.eight_potato.designsystem.R.drawable.ic_end),
-                        contentDescription = "",
-                        tint = Color(0xFFFF7512)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = restStop.address,
-                        fontSize = 14.sp,
-                        color = Color(0xFFA8A8A8)
+                        text = restStop.direction,
+                        style = Typo.SmallM12,
+                        color = Colors.Blk60
+                    )
+                    Spacer(modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .size(width = 1.dp, height = 12.dp)
+                        .background(Colors.Blk40))
+                    Text(
+                        text = "네이버 평점",
+                        style = Typo.SmallB12,
+                        color = Colors.Sub2100
+                    )
+                    Icon(
+                        modifier = Modifier
+                            .size(12.dp)
+                            .padding(horizontal = 2.dp),
+                        painter = painterResource(id = R.drawable.ic_star),
+                        contentDescription = "",
+                        tint = Colors.Sub2100
+                    )
+                    Text(
+                        text = restStop.rate.toString(),
+                        style = Typo.SmallB12,
+                        color = Colors.Sub2100
                     )
                 }
             }
             HyusikChip(
                 shape = RoundedCornerShape(8.dp),
                 paddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-                backgroundColor = Color(0xFFF1FAC3)
+                backgroundColor = Colors.Blk10
             ) {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = painterResource(id = R.drawable.ic_folk),
+                    contentDescription = "",
+                    tint = Colors.Blk60
+                )
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = restStop.state.text,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color(0xFF4F9D12)
+                    style = Typo.SmallB12,
+                    color = Colors.Blk60
                 )
             }
         }
@@ -106,50 +130,33 @@ internal fun RestStopItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = Color(0xFFFAFAFA),
+                    color = Colors.White,
                     shape = RoundedCornerShape(12.dp)
                 )
-                .padding(horizontal = 8.dp, vertical = 14.dp),
+                .padding(horizontal = 20.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    modifier = Modifier.size(12.dp),
-                    imageVector = Icons.Default.Star,
-                    contentDescription = "",
-                    tint = Color(0xFFFED402)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = restStop.rate.toString(),
-                    color = Color(0xFFFF7512),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
             RestStopInfo(
                 title = "휘발유",
                 desc = "${restStop.gasolinePrice.toMoneyFormat()}원"
             )
+            Spacer(modifier = Modifier.width(8.dp))
             RestStopInfo(
                 title = "경유",
                 desc = "${restStop.dieselPrice.toMoneyFormat()}원"
             )
-            Spacer(
-                modifier = Modifier
-                    .width(1.dp)
-                    .background(Color(0xFFBCB6AD))
-            )
-            RestStopInfo(title = "총 메뉴", desc = "${restStop.menuCount}가지")
+            Spacer(modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .size(width = 1.dp, height = 12.dp)
+                .background(Colors.Blk40))
+            RestStopInfo(title = "메뉴", desc = "${restStop.menuCount}가지")
         }
         Spacer(modifier = Modifier.height(28.dp))
         if (isLastItem.not()) {
             HorizontalDivider(
-                color = Color(0xFFEDF1F3),
-                thickness = (3).dpToPx(context).toFloat(),
+                color = Colors.Main30,
+                thickness = (6).dpToPx(context).toFloat(),
                 dash = 16f
             )
         }
@@ -165,16 +172,14 @@ private fun RestStopInfo(
     Row(modifier) {
         Text(
             text = title,
-            color = Color(0xFFA8A8A8),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Medium
+            style = Typo.BodyM14,
+            color = Colors.Blk40
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = desc,
-            color = Colors.Black,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
+            style = Typo.BodySB14,
+            color = Colors.Blk100
         )
     }
 }

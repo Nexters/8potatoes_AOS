@@ -17,6 +17,7 @@ data class AddressData(
         val key: String, // 관심 장소 식별자
         val name: String, // 장소명(시설물 등) 및 업체명
         val fullAddress: String?, // 도로명 주소
+        val oldAddress: String?, // 지번 주소
         val poi: PoiData?
     )
 }
@@ -33,6 +34,19 @@ fun TmapAddressResponse.toData(): AddressData {
                 key = it.key,
                 name = it.name,
                 fullAddress = address?.fullAddress,
+                oldAddress = listOf(
+                    it.upperAddrName,
+                    it.middleAddrName,
+                    it.lowerAddrName,
+                    it.detailAddrName,
+                    if (it.firstNo.isNotEmpty() && it.secondNo.isNotEmpty()) {
+                        "${it.firstNo}-${it.secondNo}"
+                    } else if (it.firstNo.isNotEmpty()){
+                        it.firstNo
+                    } else if (it.secondNo.isNotEmpty()) {
+                        it.secondNo
+                    } else ""
+                ).joinToString(" "),
                 poi = address?.let { poi ->
                     PoiData(poi.lat, poi.lon)
                 }
@@ -47,6 +61,7 @@ fun AddressData.Poi.toModel(): AddressModel {
         key = key,
         name = name,
         fullAddress = fullAddress,
+        oldAddress = oldAddress,
         poi = poi?.toModel()
     )
 }

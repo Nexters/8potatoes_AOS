@@ -1,9 +1,5 @@
 package com.eight_potato.hyusikmatju.main
 
-import android.app.Activity
-import android.content.Intent
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -24,13 +20,8 @@ import com.eight_potato.designsystem.button.HyusikButton
 import com.eight_potato.designsystem.theme.Colors
 import com.eight_potato.hyusikmatju.ui.EditStartAndEndLocation
 import com.eight_potato.rest.list.RestListActivity
-import com.eight_potato.search.SearchAddressActivity
-import com.eight_potato.ui.base.BaseActivity
 import com.eight_potato.ui.direction.DirectionActivity
-import com.eight_potato.ui.direction.DirectionViewModel
-import com.eight_potato.ui.ext.getSerializable
 import com.eight_potato.ui.header.SingleTextHeader
-import com.eight_potato.ui.model.address.AddressUiModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

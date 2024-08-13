@@ -13,4 +13,5 @@ dependencies {
     implementation(project(":core:domain"))
 
     implementation(libs.naverMap)
+    implementation(libs.bundles.material.design)
 }

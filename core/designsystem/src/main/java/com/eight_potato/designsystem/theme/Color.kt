@@ -20,8 +20,19 @@ object Colors {
     val Gray500 = Color(0xFFA8A8A8)
     val Gray600 = Color(0xFFCACACA)
 
+    val Blk10 = Color(0xFFE9E5DE)
+    val Blk40 = Color(0xFFA69F95)
     val Blk60 = Color(0xFF797165)
+    val Blk100 = Color(0xFF201404)
 
+    val Main30 = Color(0xFFFFD6B8)
     val Main50 = Color(0xFFFFBA89)
     val Main100 = Color(0xFFFF7512)
+
+    val Bg50 = Color(0xFFF7EDE1)
+    val Bg100 = Color(0xFFEAE0D6)
+
+    val Sub2100 = Color(0xFF34C11D)
+
+    val neutral = Color(0xFFA69F95)
 }
