@@ -41,7 +41,7 @@ class CurrentLocationViewModel @Inject constructor(
                     currentLocation = AddressUiModel(
                         name = it.buildingName.ifBlank { it.fullAddress },
                         roadAddr = it.fullAddress,
-                        oldAddr = "",
+                        oldAddr = it.oldAddress,
                         poi = PoiUiModel(
                             lat = position.latitude.toFloat(),
                             lon = position.longitude.toFloat()
