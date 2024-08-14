@@ -1,7 +1,11 @@
 package com.eight_potato.search.location
 
+import android.icu.text.IDNA.Info
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -17,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.flowWithLifecycle
@@ -36,6 +42,8 @@ import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationSource
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.overlay.InfoWindow
+import com.naver.maps.map.overlay.InfoWindow.ViewAdapter
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
@@ -52,16 +60,19 @@ class CurrentLocationActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationManager.checkLocationPermissionAndShowDialog {
-            if (it) {
-                LocationServices.getFusedLocationProviderClient(this)
-                    .lastLocation
-                    .addOnSuccessListener {
-                        naverMap?.moveCamera(CameraUpdate.scrollTo(
-                            LatLng(it.latitude, it.longitude)
-                        ))
-                    }
-            } else finish()
+            if (it) setCurrentPosition()
+            else finish()
         }
+    }
+
+    private fun setCurrentPosition() {
+        LocationServices.getFusedLocationProviderClient(this)
+            .lastLocation
+            .addOnSuccessListener {
+                naverMap?.moveCamera(CameraUpdate.scrollTo(
+                    LatLng(it.latitude, it.longitude)
+                ))
+            }
     }
 
     @Composable
@@ -117,26 +128,38 @@ class CurrentLocationActivity : BaseActivity() {
 
                     this@CurrentLocationActivity.naverMap = naverMap
                 }
-                HyusikSurface(
+                Column (
                     modifier = Modifier
                         .fillMaxWidth()
-                        .align(Alignment.BottomStart),
-                    contentPadding = PaddingValues(top = 40.dp, end = 20.dp, bottom = 12.dp, start = 20.dp),
-                    shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-                    contentColor = Colors.Black
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = address.value?.let {
-                            if (it.buildingName.isNotEmpty()) it.buildingName
-                            else if (it.fullAddress.isNotEmpty()) it.fullAddress
-                            else if (it.oldAddress.isNotEmpty()) it.oldAddress
-                            else ""
-                        } ?: "",
-                        style = Typo.HeadB18,
-                        color = Colors.Blk100,
-                        textAlign = TextAlign.Start
+                        .align(Alignment.BottomStart)
+                ){
+                    Image(
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .size(48.dp)
+                            .align(Alignment.End)
+                            .clickable { setCurrentPosition() },
+                        painter = painterResource(id = com.eight_potato.ui.R.drawable.ic_current_position),
+                        contentDescription = ""
                     )
+                    HyusikSurface(
+                        contentPadding = PaddingValues(top = 40.dp, end = 20.dp, bottom = 12.dp, start = 20.dp),
+                        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+                        contentColor = Colors.Black
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = address.value?.let {
+                                if (it.buildingName.isNotEmpty()) it.buildingName
+                                else if (it.fullAddress.isNotEmpty()) it.fullAddress
+                                else if (it.oldAddress.isNotEmpty()) it.oldAddress
+                                else ""
+                            } ?: "",
+                            style = Typo.HeadB18,
+                            color = Colors.Blk100,
+                            textAlign = TextAlign.Start
+                        )
+                    }
                 }
             }
         }

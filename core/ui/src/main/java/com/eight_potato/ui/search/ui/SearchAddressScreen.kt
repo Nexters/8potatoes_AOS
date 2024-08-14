@@ -120,7 +120,7 @@ internal fun SearchAddressScreen(
             ){
                 Image(
                     modifier = Modifier.size(24.dp),
-                    painter = painterResource(id = R.drawable.ic_search_current_position),
+                    painter = painterResource(id = R.drawable.ic_current_position),
                     contentDescription = ""
                 )
                 Text(
