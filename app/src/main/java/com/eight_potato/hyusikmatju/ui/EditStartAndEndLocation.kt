@@ -154,6 +154,7 @@ private fun InputLocationItem(
                 color = Colors.Blk30
             )
             Text(
+                modifier = Modifier.padding(start = 2.dp),
                 text = "*",
                 style = Typo.BodyM14,
                 color = Colors.error100

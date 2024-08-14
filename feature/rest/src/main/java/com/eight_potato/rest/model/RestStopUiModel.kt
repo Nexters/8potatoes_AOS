@@ -19,7 +19,7 @@ data class RestStopUiModel(
     val menuCount: Int
 )
 
-val TEST_REST_STOP = (0..1).map {
+val TEST_REST_STOP = (0..7).map {
     RestStopUiModel(
         id = "$it",
         direction = "서울 방향",

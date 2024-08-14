@@ -2,10 +2,8 @@ package com.eight_potato.rest.list
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,7 +12,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.eight_potato.rest.R
 import com.eight_potato.rest.detail.RestStopDetailActivity
@@ -27,7 +24,6 @@ import com.eight_potato.ui.map.NaverMap
 import com.eight_potato.ui.model.address.AddressUiModel
 import com.eight_potato.ui.model.address.PoiUiModel
 import com.eight_potato.ui.model.address.toLatLng
-import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
@@ -67,24 +63,11 @@ class RestListActivity : DirectionActivity() {
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
-            Column {
-                NaverMap (modifier = Modifier.weight(1f)){
-                    naverMap = it
-                    pathOverlay.color = getColor(R.color.main100)
-                    pathOverlay.width = (6).dpToPx(this@RestListActivity)
-                    restListViewModel.getDirection(start.value, end.value)
-                }
-                RestListBottomSheet(
-                    modifier = Modifier.height(140.dp),
-                    onClickRestStop = {
-                        startActivity(
-                            Intent(
-                                this@RestListActivity,
-                                RestStopDetailActivity::class.java
-                            )
-                        )
-                    }
-                )
+            NaverMap (modifier = Modifier.fillMaxSize()){
+                naverMap = it
+                pathOverlay.color = getColor(R.color.main100)
+                pathOverlay.width = (6).dpToPx(this@RestListActivity)
+                restListViewModel.getDirection(start.value, end.value)
             }
             RestListHeader(
                 modifier = Modifier
@@ -94,6 +77,17 @@ class RestListActivity : DirectionActivity() {
                 end = end.value,
                 onClickStart = ::moveToSearchScreenForStart,
                 onClickEnd = ::moveToSearchScreenForEnd
+            )
+            RestListBottomSheet(
+                modifier = Modifier.align(Alignment.BottomStart),
+                onClickRestStop = {
+                    startActivity(
+                        Intent(
+                            this@RestListActivity,
+                            RestStopDetailActivity::class.java
+                        )
+                    )
+                }
             )
         }
     }
