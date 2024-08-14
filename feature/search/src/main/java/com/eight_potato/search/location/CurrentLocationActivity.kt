@@ -27,8 +27,15 @@ import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.search.R
 import com.eight_potato.ui.base.BaseActivity
 import com.eight_potato.ui.header.SingleTextHeader
+import com.eight_potato.ui.manager.LocationManager
 import com.eight_potato.ui.map.NaverMap
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationSource
 import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
@@ -39,11 +46,22 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class CurrentLocationActivity : BaseActivity() {
     private val viewModel: CurrentLocationViewModel by viewModels()
-    private lateinit var locationSource: FusedLocationSource
+    private val locationManager by lazy { LocationManager(this) }
+    private var naverMap: NaverMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        locationSource = FusedLocationSource(this, 2000)
+        locationManager.checkLocationPermissionAndShowDialog {
+            if (it) {
+                LocationServices.getFusedLocationProviderClient(this)
+                    .lastLocation
+                    .addOnSuccessListener {
+                        naverMap?.moveCamera(CameraUpdate.scrollTo(
+                            LatLng(it.latitude, it.longitude)
+                        ))
+                    }
+            } else finish()
+        }
     }
 
     @Composable
@@ -81,9 +99,6 @@ class CurrentLocationActivity : BaseActivity() {
         ) { padding ->
             Box(modifier = Modifier.padding(padding)) {
                 NaverMap(modifier = Modifier.fillMaxSize()) { naverMap ->
-                    naverMap.locationSource = locationSource
-                    naverMap.locationTrackingMode = LocationTrackingMode.None
-
                     val marker = Marker().apply {
                         position = naverMap.cameraPosition.target
                         icon = OverlayImage.fromResource(
@@ -99,6 +114,8 @@ class CurrentLocationActivity : BaseActivity() {
                         val position = naverMap.cameraPosition.target
                         viewModel.getAddress(position)
                     }
+
+                    this@CurrentLocationActivity.naverMap = naverMap
                 }
                 HyusikSurface(
                     modifier = Modifier
@@ -123,21 +140,6 @@ class CurrentLocationActivity : BaseActivity() {
                 }
             }
         }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        val result =
-            locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (result) {
-            if (!locationSource.isActivated) {
-                return
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun observe() {
