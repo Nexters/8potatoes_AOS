@@ -2,10 +2,12 @@ package com.eight_potato.hyusikmatju.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.eight_potato.designsystem.button.HyusikButton
 import com.eight_potato.designsystem.theme.Colors
+import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.hyusikmatju.ui.EditStartAndEndLocation
 import com.eight_potato.rest.list.RestListActivity
 import com.eight_potato.ui.direction.DirectionActivity
@@ -50,9 +53,14 @@ class MainActivity : DirectionActivity() {
                             end = end.value
                         )
                     },
-                    backgroundColor = Colors.Black
+                    shape = RoundedCornerShape(16.dp),
+                    contentPadding = PaddingValues(20.dp),
+                    backgroundColor = Colors.Blk30
                 ) {
-                    Text(text = "이 위치로 주소 등록")
+                    Text(
+                        text = "휴게소 찾기",
+                        style = Typo.ButtonB16
+                    )
                 }
             }
         ) {
@@ -75,9 +83,7 @@ class MainActivity : DirectionActivity() {
                         .padding(horizontal = 20.dp)
                         .padding(top = 40.dp, bottom = 32.dp),
                     text = "쥬쥬와 함께\n휴게소 맛집을 찾아보세요!",
-                    color = Colors.Black,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    style = Typo.HeadB24
                 )
                 EditStartAndEndLocation(
                     start = start.value,

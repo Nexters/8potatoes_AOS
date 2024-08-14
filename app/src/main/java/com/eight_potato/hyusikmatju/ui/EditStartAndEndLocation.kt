@@ -1,8 +1,10 @@
 package com.eight_potato.hyusikmatju.ui
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,11 +13,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.eight_potato.designsystem.divider.HorizontalDivider
+import com.eight_potato.designsystem.divider.VerticalDivider
+import com.eight_potato.designsystem.theme.Colors
+import com.eight_potato.designsystem.theme.Typo
+import com.eight_potato.ui.ext.dpToPx
 import com.eight_potato.ui.model.address.AddressUiModel
 
 /**
@@ -24,6 +31,7 @@ import com.eight_potato.ui.model.address.AddressUiModel
 @Composable
 internal fun EditStartAndEndLocation(
     modifier: Modifier = Modifier,
+    context: Context = LocalContext.current,
     start: AddressUiModel? = null,
     end: AddressUiModel? = null,
     onClickStartAddress: () -> Unit,
@@ -33,6 +41,12 @@ internal fun EditStartAndEndLocation(
     Layout(
         modifier = modifier.padding(horizontal = 20.dp, vertical = 10.dp),
         content = {
+            VerticalDivider(
+                modifier = Modifier.layoutId("vertical"),
+                thickness = (2).dpToPx(context).toFloat(),
+                color = Colors.Main30,
+                dash = (4).dpToPx(context).toFloat()
+            )
             Image(
                 modifier = Modifier.layoutId("icStart"),
                 painter = painterResource(id = com.eight_potato.designsystem.R.drawable.ic_start),
@@ -91,6 +105,13 @@ internal fun EditStartAndEndLocation(
 
         val startHeight = start?.height ?: 0
         val endHeight = end?.height ?: 0
+
+        val verticalHeight = startHeight - icStartHeight - (8).dp.roundToPx()
+        val vertical = measurable.find { it.layoutId == "vertical" }?.measure(
+            constraints = constraints.copy(
+                minHeight = verticalHeight, maxHeight = verticalHeight
+            )
+        )
         layout(
             width = constraints.maxWidth,
             height = constraints.maxHeight
@@ -104,6 +125,9 @@ internal fun EditStartAndEndLocation(
             reverse?.placeRelative(
                 constraints.maxWidth - reverseWidth,
                 (constraints.maxHeight - reverseHeight) / 2
+            )
+            vertical?.placeRelative(
+                icStartWidth / 2, startHeight / 2 + icStartHeight / 2 + (4).dp.roundToPx()
             )
         }
     }
@@ -123,14 +147,23 @@ private fun InputLocationItem(
             .clickable { onClickAddress() }
             .padding(vertical = 22.dp)
     ) {
-        Text(
-            text = title,
-            fontSize = 14.sp
-        )
+        Row {
+            Text(
+                text = title,
+                style = Typo.BodyM14,
+                color = Colors.Blk30
+            )
+            Text(
+                text = "*",
+                style = Typo.BodyM14,
+                color = Colors.error100
+            )
+        }
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = address?.name ?: desc,
-            fontSize = 18.sp
+            style = Typo.BodySB18,
+            color = address?.name?.let { Colors.Blk100 } ?: Colors.Blk40
         )
     }
 }

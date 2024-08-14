@@ -21,6 +21,7 @@ object Colors {
     val Gray600 = Color(0xFFCACACA)
 
     val Blk10 = Color(0xFFE9E5DE)
+    val Blk30 = Color(0xFFBCB6AD)
     val Blk40 = Color(0xFFA69F95)
     val Blk60 = Color(0xFF797165)
     val Blk100 = Color(0xFF201404)
@@ -35,4 +36,5 @@ object Colors {
     val Sub2100 = Color(0xFF34C11D)
 
     val neutral = Color(0xFFA69F95)
+    val error100 = Color(0xFFFF3B30)
 }

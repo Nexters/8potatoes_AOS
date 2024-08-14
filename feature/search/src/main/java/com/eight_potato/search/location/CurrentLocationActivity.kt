@@ -69,9 +69,9 @@ class CurrentLocationActivity : BaseActivity() {
         LocationServices.getFusedLocationProviderClient(this)
             .lastLocation
             .addOnSuccessListener {
-                naverMap?.moveCamera(CameraUpdate.scrollTo(
-                    LatLng(it.latitude, it.longitude)
-                ))
+                val position = LatLng(it.latitude, it.longitude)
+                viewModel.getAddress(position)
+                naverMap?.moveCamera(CameraUpdate.scrollTo(position))
             }
     }
 
