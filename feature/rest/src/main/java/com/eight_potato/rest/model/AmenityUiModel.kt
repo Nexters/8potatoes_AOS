@@ -1,15 +1,18 @@
 package com.eight_potato.rest.model
 
-data class BrandUiModel(
+/**
+ * 편의 시설 정보
+ */
+data class AmenityUiModel(
     override val id: String,
     override val image: String,
     override val name: String
-) : RowItem
+): RowItem
 
-val TEST_BRAND = (0..5).map {
-    BrandUiModel(
+val TEST_AMENITY = (0..5).map {
+    AmenityUiModel(
         id = "$it",
         image = "",
-        name = "브랜드$it"
+        name = "편의시설$it"
     )
 }

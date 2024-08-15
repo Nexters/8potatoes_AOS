@@ -1,4 +1,4 @@
-package com.eight_potato.rest.detail.ui
+package com.eight_potato.rest.detail.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,15 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.eight_potato.designsystem.theme.Colors
 import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.rest.detail.RestStopDetailActivity
@@ -33,7 +27,9 @@ internal fun RestSTopDetailTab(
     onClickTab: (RestStopTab) -> Unit
 ) {
     Column(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Colors.White)
     ) {
         Row(
             modifier = Modifier

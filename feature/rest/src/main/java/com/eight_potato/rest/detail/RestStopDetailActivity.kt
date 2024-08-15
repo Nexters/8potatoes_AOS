@@ -15,9 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.eight_potato.rest.detail.ui.RestSTopDetailTab
-import com.eight_potato.rest.detail.ui.RestStopDetailHeader
-import com.eight_potato.rest.detail.ui.RestStopFuelBody
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
+import com.eight_potato.rest.detail.ui.common.RestSTopDetailTab
+import com.eight_potato.rest.detail.ui.common.RestStopDetailHeader
+import com.eight_potato.rest.detail.ui.extra.RestStopFuelBody
+import com.eight_potato.rest.detail.ui.info.RestStopInfoScreen
 import com.eight_potato.rest.detail.ui.menu.RestStopMenuScreen
 import com.eight_potato.rest.model.RestStopUiModel
 import com.eight_potato.rest.model.TEST_REST_STOP
@@ -34,6 +38,8 @@ class RestStopDetailActivity : BaseActivity() {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Body() {
+        val clipboardManager: ClipboardManager = LocalClipboardManager.current
+
         var headerTitle by remember { mutableStateOf("") }
         val restStop = TEST_REST_STOP.first()
         val currentTab = viewModel.currentTab.collectAsState()
@@ -57,15 +63,21 @@ class RestStopDetailActivity : BaseActivity() {
                         onClickTab = viewModel::changeTab
                     )
                 }
-                when(currentTab.value) {
+                when (currentTab.value) {
                     RestStopTab.MENU -> {
                         RestStopMenuScreen(
                             menu = TEST_MENU.first(),
                             restStop = restStop
                         )
                     }
+
                     RestStopTab.EXTRA -> RestStopFuelBody(restStop = restStop)
-                    RestStopTab.INFO -> TODO()
+                    RestStopTab.INFO -> RestStopInfoScreen(
+                        restStop = restStop,
+                        onCopyAddress = {
+                            clipboardManager.setText(AnnotatedString(restStop.address))
+                        }
+                    )
                 }
             }
         }

@@ -12,6 +12,7 @@ data class RestStopUiModel(
     val direction: String, // 방면
     val name: String, // 이름
     val address: String, // 주소
+    val callNumber: String, // 연락처
     val rate: Float, // 평점
     val state: RestStopState, // 운영 여부
     val startTime: String, // 시작 시간
@@ -20,12 +21,15 @@ data class RestStopUiModel(
     val dieselPrice: Int, // 경유 가격
     val lpgPrice: Int, // LPG 가격
     val existChargeElectricCar: Boolean, // 전기차 충전 가능 여부
-    val existChargeHydrogenCar: Boolean, // 수소차 충전 가능 여부
+    val existChargeHydrogenCar: Boolean, // 수소차 충전 가능 여부,
     val compatCarParkArea: Int, // 소형차 주차 공간
     val largeCarParkArea: Int, // 대형차 주차 공간
     val disabledPersonParkArea: Int, // 장애인 주차 공간
     val menuCount: Int,
-    val updateDate: LocalDate
+    val updateDate: LocalDate,
+    val operatingTime: List<OperatingTimeUiModel>, // 영업시간
+    val brands: List<BrandUiModel>, // 브랜드
+    val amenities: List<AmenityUiModel> // 편의 시설
 ) : Serializable {
     val totalParkArea = compatCarParkArea + largeCarParkArea + disabledPersonParkArea
 }
@@ -36,6 +40,7 @@ val TEST_REST_STOP = (0..7).map {
         direction = "서울 방향",
         name = "천안 삼거리 휴게소",
         address = "충남 천안시 구성동 171",
+        callNumber = "010-1234-1234",
         rate = 4.2f,
         state = RestStopState.OPEN,
         startTime = "09:00",
@@ -49,6 +54,9 @@ val TEST_REST_STOP = (0..7).map {
         largeCarParkArea = 23,
         disabledPersonParkArea = 12,
         menuCount = 32,
-        updateDate = LocalDate.now()
+        updateDate = LocalDate.now(),
+        operatingTime = TEST_OPERATING,
+        brands = TEST_BRAND,
+        amenities = TEST_AMENITY
     )
 }

@@ -29,6 +29,7 @@ object Colors {
     val Blk80 = Color(0xFF797165)
     val Blk100 = Color(0xFF201404)
 
+    val Main10 = Color(0xFFFFF1E7)
     val Main30 = Color(0xFFFFD6B8)
     val Main50 = Color(0xFFFFBA89)
     val Main100 = Color(0xFFFF7512)
@@ -40,4 +41,6 @@ object Colors {
 
     val neutral = Color(0xFFA69F95)
     val error100 = Color(0xFFFF3B30)
+
+    val Good100 = Color(0xFF1E82F1)
 }

@@ -1,4 +1,4 @@
-package com.eight_potato.rest.detail.ui
+package com.eight_potato.rest.detail.ui.extra
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -26,6 +26,8 @@ import com.eight_potato.designsystem.theme.Colors
 import com.eight_potato.designsystem.theme.HyusikMatjuTheme
 import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.rest.R
+import com.eight_potato.rest.detail.ui.common.RestStopContainer
+import com.eight_potato.rest.detail.ui.common.RestStopHeader
 import com.eight_potato.rest.model.RestStopUiModel
 import com.eight_potato.ui.ext.fullFormat
 import com.eight_potato.ui.ext.toMoneyFormat
@@ -34,8 +36,8 @@ internal fun LazyListScope.RestStopFuelBody(
     restStop: RestStopUiModel
 ) {
     item {
-        RestStopFuelContainer {
-            RestStopFuelHeader(
+        RestStopContainer {
+            RestStopHeader(
                 icon = R.drawable.ic_folk,
                 title = "주유 및 충전"
             )
@@ -60,8 +62,8 @@ internal fun LazyListScope.RestStopFuelBody(
         )
     }
     item {
-        RestStopFuelContainer {
-            RestStopFuelHeader(
+        RestStopContainer {
+            RestStopHeader(
                 icon = R.drawable.ic_star,
                 title = "주차 공간",
                 desc = "${restStop.totalParkArea}대 주차 가능"
@@ -96,48 +98,6 @@ internal fun LazyListScope.RestStopFuelBody(
                 color = Colors.Blk30
             )
             Spacer(modifier = Modifier.height(26.dp))
-        }
-    }
-}
-
-@Composable
-private fun RestStopFuelContainer(
-    content: @Composable ColumnScope.() -> Unit
-) {
-    Column(
-        modifier = Modifier.padding(vertical = 40.dp, horizontal = 20.dp),
-        content = content
-    )
-}
-
-@Composable
-private fun RestStopFuelHeader(
-    modifier: Modifier = Modifier,
-    @DrawableRes icon: Int,
-    title: String,
-    desc: String? = null
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            modifier = Modifier.size(24.dp),
-            painter = painterResource(id = icon),
-            contentDescription = ""
-        )
-        Text(
-            modifier = Modifier.padding(start = 12.dp),
-            text = title,
-            style = Typo.HeadSB20
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        if (desc.isNullOrBlank().not()) {
-            Text(
-                text = desc ?: "",
-                style = Typo.BodySB14,
-                color = Colors.Blk40
-            )
         }
     }
 }
