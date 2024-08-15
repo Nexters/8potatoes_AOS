@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,27 +17,14 @@ import com.eight_potato.ui.model.menu.TEST_MENU
 /**
  * 휴게소 메뉴 정보 Tab
  */
-@Composable
-internal fun RestStopMenuScreen(
-    modifier: Modifier = Modifier,
+internal fun LazyListScope.RestStopMenuScreen(
     menu: MenuUiModel,
-    restStop: RestStopUiModel,
-    onClickMoreMenu: () -> Unit
+    restStop: RestStopUiModel
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth()
-    ) {
+    item {
         EssentialMenu(
             menu = menu,
             restStopName = restStop.name
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        RestStopMenu(
-            menus = TEST_MENU.subList(0,4),
-            onClickMore = onClickMoreMenu,
-            onChangeMenuSortType = {}
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        RestStopBrand(brands = TEST_BRAND)
     }
 }

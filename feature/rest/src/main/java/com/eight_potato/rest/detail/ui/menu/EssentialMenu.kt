@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.eight_potato.designsystem.theme.Colors
 import com.eight_potato.ui.ext.toMoneyFormat
 import com.eight_potato.ui.model.menu.MenuUiModel
@@ -56,14 +57,12 @@ internal fun EssentialMenu(
                 fontWeight = FontWeight.Bold
             )
         }
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .width(164.dp)
                 .aspectRatio(1f)
                 .clip(CircleShape),
-            painter = painterResource(
-                id = com.eight_potato.designsystem.R.drawable.test
-            ),
+            model = "https://dev-malssami-bucket.s3.ap-northeast-2.amazonaws.com/assets/5d08fa872460fdee.png",
             contentDescription = "",
             contentScale = ContentScale.Crop
         )

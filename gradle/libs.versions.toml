@@ -24,6 +24,7 @@ gsonVersion = "2.9.0"
 retrofitVersion = "2.9.0"
 okHttpVersion = "4.9.3"
 glideVersion = "4.13.2"
+coil = "2.1.0"
 # KaptDependencies
 hiltVersion = "2.42"
 # Configuration
@@ -88,6 +89,7 @@ okHttpLoggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-int
 
 # image
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glideVersion" }
+coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -114,7 +116,7 @@ androidx = [
 unit-test = ["jUnit"]
 android-test = ["jUnit", "android-test", "espresso"]
 material-design = ["material-design"]
-image = ["glide"]
+image = ["glide", "coil"]
 retrofit = [
     "gson", "retrofit",
     "retrofitGsonConverter", "okHttp",

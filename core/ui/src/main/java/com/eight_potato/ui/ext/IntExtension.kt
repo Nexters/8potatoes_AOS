@@ -23,3 +23,8 @@ fun Int.pxToDp(context: Context): Float {
     val density = context.resources.displayMetrics.densityDpi.toFloat()
     return this / (density / DisplayMetrics.DENSITY_DEFAULT)
 }
+
+/**
+ * Integer 를 String 으로 변경하면서 0 채우기
+ */
+fun Int.padStartWithZeros(zero: Int = 2) = toString().padStart(zero, '0')

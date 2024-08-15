@@ -20,10 +20,13 @@ object Colors {
     val Gray500 = Color(0xFFA8A8A8)
     val Gray600 = Color(0xFFCACACA)
 
+    val Blk5 = Color(0xFFF9F9F9)
     val Blk10 = Color(0xFFE9E5DE)
+    val Blk20 = Color(0xFFD2CEC6)
     val Blk30 = Color(0xFFBCB6AD)
     val Blk40 = Color(0xFFA69F95)
     val Blk60 = Color(0xFF797165)
+    val Blk80 = Color(0xFF797165)
     val Blk100 = Color(0xFF201404)
 
     val Main30 = Color(0xFFFFD6B8)

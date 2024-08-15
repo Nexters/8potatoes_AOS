@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.eight_potato.designsystem.theme.Typo
+import com.eight_potato.ui.R
 
 /**
  * 공통 Header
@@ -37,11 +39,11 @@ fun SingleTextHeader(
         onClickCloseButton?.let {
             Icon(
                 modifier = Modifier
-                    .padding(12.dp)
+                    .padding(horizontal = 12.dp, vertical = 16.dp)
                     .size(32.dp)
                     .align(Alignment.CenterStart)
                     .clickable { onClickCloseButton() },
-                imageVector = Icons.Default.KeyboardArrowLeft,
+                painter = painterResource(id = R.drawable.ic_arrow_left),
                 contentDescription = "이전화면으로 이동"
             )
         }
