@@ -45,6 +45,8 @@ class RestStopDetailActivity : BaseActivity() {
         val currentTab = viewModel.currentTab.collectAsState()
         val scroll = rememberScrollState()
 
+        val groupedMenus = remember { TEST_MENU.groupBy { it.menuType } }
+
         Scaffold(
             topBar = {
                 SingleTextHeader(
@@ -67,6 +69,7 @@ class RestStopDetailActivity : BaseActivity() {
                     RestStopTab.MENU -> {
                         RestStopMenuScreen(
                             menu = TEST_MENU.first(),
+                            menus = groupedMenus,
                             restStop = restStop
                         )
                     }

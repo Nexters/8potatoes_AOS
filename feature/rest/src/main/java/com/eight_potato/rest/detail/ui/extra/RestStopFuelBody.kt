@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +43,9 @@ internal fun LazyListScope.RestStopFuelBody(
                 title = "주유 및 충전"
             )
             Spacer(modifier = Modifier.height(26.dp))
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 RestStopFuelItem(title = "휘발유", price = restStop.gasolinePrice)
                 RestStopFuelItem(title = "경유", price = restStop.dieselPrice)
                 RestStopFuelItem(title = "LPG", price = restStop.lpgPrice)
@@ -113,6 +116,10 @@ private fun RowScope.RestStopFuelItem(
     Column(
         modifier = modifier
             .weight(1f)
+            .background(
+                color = Colors.Main10,
+                shape = RoundedCornerShape(16.dp)
+            )
             .padding(vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp)

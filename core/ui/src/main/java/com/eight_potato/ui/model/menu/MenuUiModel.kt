@@ -7,9 +7,8 @@ data class MenuUiModel(
     val id: String, // 메뉴 id
     val name: String, // 이름
     val price: Int, // 가격
-    val premium: Boolean, // 프리미엄
-    val best: Boolean, // 베스트
-    val recommend: Boolean, // 추천
+    val signature: Boolean, // 시그니처
+    val popular: Boolean, // 인기
     val menuType: MenuType // 메뉴 타입
 )
 
@@ -18,9 +17,10 @@ val TEST_MENU = (0..30).map {
         id = "$it",
         name = "메뉴 이름 $it",
         price = it * 200,
-        premium = it % 2 == 0,
-        best = it % 3 == 0,
-        recommend = it % 4 == 0,
-        menuType = MenuType.KOREAN
+        signature = it % 2 == 0,
+        popular = it % 3 == 0,
+        menuType = if (it % 4 == 0) MenuType.KOREAN
+        else if (it % 3 == 0) MenuType.WESTERN
+        else MenuType.SNACK
     )
 }

@@ -25,69 +25,51 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.eight_potato.designsystem.theme.Colors
+import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.ui.ext.toMoneyFormat
 import com.eight_potato.ui.model.menu.MenuUiModel
 
 @Composable
 internal fun EssentialMenu(
     modifier: Modifier = Modifier,
-    menu: MenuUiModel,
-    restStopName: String
+    menu: MenuUiModel
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Colors.White)
-            .padding(vertical = 40.dp, horizontal = 44.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                modifier = Modifier.size(24.dp),
-                painter = painterResource(id = com.eight_potato.designsystem.R.drawable.ic_essential_menu),
-                contentDescription = ""
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(
-                text = "예쁘게 먹으면 기분이 조크등요",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        Text(
+            text = "오직 이곳에서만 먹을 수 있는",
+            style = Typo.HeadSB20,
+            color = Colors.Blk100
+        )
+        Spacer(modifier = Modifier.height(32.dp))
         AsyncImage(
             modifier = Modifier
-                .width(164.dp)
+                .width(180.dp)
                 .aspectRatio(1f)
                 .clip(CircleShape),
             model = "https://dev-malssami-bucket.s3.ap-northeast-2.amazonaws.com/assets/5d08fa872460fdee.png",
             contentDescription = "",
             contentScale = ContentScale.Crop
         )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "오직 ${restStopName}에서만 즐길 수 있는",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Colors.Gray600
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = menu.name,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Colors.Black
-            )
-        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "제철나물, 순창고추장을 넣어 고급스럽게 구성한",
+            style = Typo.BodyM16,
+            color = Colors.Blk40
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = menu.name,
+            style = Typo.HeadB18,
+            color = Colors.Blk100
+        )
+        Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "${menu.price.toMoneyFormat()}원",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Colors.Gray600
+            style = Typo.BodySB16,
+            color = Colors.Blk60
         )
     }
 }
