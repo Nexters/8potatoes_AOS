@@ -72,7 +72,9 @@ internal fun LazyListScope.RestStopFuelBody(
                 desc = "${restStop.totalParkArea}대 주차 가능"
             )
             Spacer(modifier = Modifier.height(26.dp))
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 RestStopFuelItem(title = "소형", price = restStop.compatCarParkArea, postFix = "대")
                 RestStopFuelItem(title = "대형", price = restStop.largeCarParkArea, postFix = "대")
                 RestStopFuelItem(

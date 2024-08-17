@@ -147,7 +147,7 @@ internal fun SearchAddressScreen(
                     contentPadding = PaddingValues(20.dp),
                     verticalArrangement = Arrangement.spacedBy(32.dp)
                 ){
-                    items(items = addresses, key = { it.name }) { address ->
+                    items(items = addresses, key = { it.poi ?: "" }) { address ->
                         SearchAddressListItem(
                             address = address,
                             onClickAddressItem = onClickAddress
