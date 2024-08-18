@@ -3,6 +3,7 @@ package com.eight_potato.rest.detail.ui.menu
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -46,7 +47,9 @@ import org.junit.experimental.categories.Categories.CategoryFilter
 internal fun LazyListScope.RestStopMenuScreen(
     menu: MenuUiModel,
     menus: Map<MenuType, List<MenuUiModel>>,
-    restStop: RestStopUiModel
+    restStop: RestStopUiModel,
+    currentMenuType: MenuType,
+    onClickMenuTab: (MenuType) -> Unit
 ) {
     item {
         RestStopContainer {
@@ -73,12 +76,16 @@ internal fun LazyListScope.RestStopMenuScreen(
     }
     stickyHeader {
         LazyRow(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().background(Colors.White),
             contentPadding = PaddingValues(20.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(items = MenuType.values(), key = { it.ordinal }) {
-                RestStopCategoryItem(category = it)
+                RestStopCategoryItem(
+                    category = it,
+                    isCurrentType = currentMenuType == it,
+                    onClickMenuTab = onClickMenuTab
+                )
             }
         }
     }
@@ -90,10 +97,12 @@ internal fun LazyListScope.RestStopMenuScreen(
 @Composable
 private fun RestStopCategoryItem(
     modifier: Modifier = Modifier,
-    category: MenuType
+    category: MenuType,
+    isCurrentType: Boolean = false,
+    onClickMenuTab: (MenuType) -> Unit
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.clickable { onClickMenuTab(category) },
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -103,7 +112,7 @@ private fun RestStopCategoryItem(
             contentPadding = PaddingValues(16.dp),
             border = BorderStroke(
                 width = 1.dp,
-                color = Colors.Blk5
+                color = if (isCurrentType) Colors.Main100 else Colors.Blk5
             )
         ) {
             Icon(
@@ -115,7 +124,7 @@ private fun RestStopCategoryItem(
         Text(
             text = category.text,
             style = Typo.BodyM14,
-            color = Colors.Blk60
+            color = if (isCurrentType) Colors.Main100 else Colors.Blk60
         )
     }
 }

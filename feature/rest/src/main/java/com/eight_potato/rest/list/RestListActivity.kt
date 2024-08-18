@@ -76,7 +76,6 @@ class RestListActivity : DirectionActivity() {
     private val pathOverlay by lazy { PathOverlay() }
 
     // 86 , 48, 0
-    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Body() {
         val start = viewModel.start.collectAsState()
