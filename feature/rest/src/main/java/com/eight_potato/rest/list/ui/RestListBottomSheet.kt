@@ -10,18 +10,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eight_potato.designsystem.theme.Colors
-import com.eight_potato.designsystem.theme.HyusikMatjuTheme
 import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.rest.model.RestStopUiModel
-import com.eight_potato.rest.model.TEST_REST_STOP
 
 @Composable
 internal fun RestListBottomSheet(
     modifier: Modifier = Modifier,
-    restStops: List<RestStopUiModel> = TEST_REST_STOP,
+    restStops: List<RestStopUiModel>,
     onClickRestStop: (RestStopUiModel) -> Unit
 ) {
     Column (
@@ -46,16 +43,6 @@ internal fun RestListBottomSheet(
                     onClickRestStop = onClickRestStop
                 )
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun RestListBottomSheetPreview() {
-    HyusikMatjuTheme {
-        RestListBottomSheet {
-
         }
     }
 }

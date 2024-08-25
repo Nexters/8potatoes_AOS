@@ -9,6 +9,7 @@ android {
 dependencies {
     implementation(libs.google.services.location)
     implementation(libs.naverMap)
+    implementation(libs.coil)
 
     implementation(project(":core:common"))
 }

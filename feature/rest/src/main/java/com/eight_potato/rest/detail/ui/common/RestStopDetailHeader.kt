@@ -16,20 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eight_potato.designsystem.dot.BaseDot
 import com.eight_potato.designsystem.theme.Colors
-import com.eight_potato.designsystem.theme.HyusikMatjuTheme
 import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.rest.R
-import com.eight_potato.rest.model.RestStopUiModel
-import com.eight_potato.rest.model.TEST_REST_STOP
+import com.eight_potato.rest.model.DetailRestStopUiModel
 
 @Composable
 internal fun RestStopDetailHeader(
     modifier: Modifier = Modifier,
-    restStop: RestStopUiModel
+    restStop: DetailRestStopUiModel
 ) {
     Column(
         modifier = modifier
@@ -45,22 +42,24 @@ internal fun RestStopDetailHeader(
                 text = restStop.name,
                 style = Typo.HeadB20
             )
-            Spacer(modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .size(width = 1.dp, height = 16.dp)
-                .background(Colors.Blk20))
-            Text(
-                text = restStop.direction,
-                style = Typo.HeadSB20,
-                color = Colors.Blk40
-            )
+            if (restStop.direction != null) {
+                Spacer(modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .size(width = 1.dp, height = 16.dp)
+                    .background(Colors.Blk20))
+                Text(
+                    text = restStop.direction,
+                    style = Typo.HeadSB20,
+                    color = Colors.Blk40
+                )
+            }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row (
             verticalAlignment = Alignment.CenterVertically
         ){
             Text(
-                text = "식당 ${restStop.state.text}",
+                text = "식당 ${if (restStop.isOperating) "영업중" else "영업끝"}",
                 style = Typo.BodySB14,
                 color = Colors.Blk80
             )
@@ -94,15 +93,5 @@ internal fun RestStopDetailHeader(
                 color = Colors.Blk80
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun RestStopDetailHeaderPreview() {
-    HyusikMatjuTheme {
-        RestStopDetailHeader(
-            restStop = TEST_REST_STOP.first()
-        )
     }
 }

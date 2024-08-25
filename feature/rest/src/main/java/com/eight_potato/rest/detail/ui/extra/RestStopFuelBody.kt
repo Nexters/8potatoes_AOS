@@ -1,25 +1,21 @@
 package com.eight_potato.rest.detail.ui.extra
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eight_potato.designsystem.divider.HorizontalDivider
@@ -29,17 +25,19 @@ import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.rest.R
 import com.eight_potato.rest.detail.ui.common.RestStopContainer
 import com.eight_potato.rest.detail.ui.common.RestStopHeader
-import com.eight_potato.rest.model.RestStopUiModel
-import com.eight_potato.ui.ext.fullFormat
+import com.eight_potato.rest.model.DetailRestStopUiModel
 import com.eight_potato.ui.ext.toMoneyFormat
 
-internal fun LazyListScope.RestStopFuelBody(
-    restStop: RestStopUiModel
+@Composable
+internal fun RestStopFuelBody(
+    restStop: DetailRestStopUiModel
 ) {
-    item {
+    Column (
+        modifier = Modifier.verticalScroll(rememberScrollState())
+    ){
         RestStopContainer {
             RestStopHeader(
-                icon = R.drawable.ic_folk,
+                icon = R.drawable.ic_gas,
                 title = "주유 및 충전"
             )
             Spacer(modifier = Modifier.height(26.dp))
@@ -55,19 +53,15 @@ internal fun LazyListScope.RestStopFuelBody(
             Spacer(modifier = Modifier.height(20.dp))
             RestStopChargeItem(title = "수소차 충전", isAble = restStop.existChargeHydrogenCar)
         }
-    }
-    item {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
                 .background(Colors.Blk5)
         )
-    }
-    item {
         RestStopContainer {
             RestStopHeader(
-                icon = R.drawable.ic_star,
+                icon = R.drawable.ic_park,
                 title = "주차 공간",
                 desc = "${restStop.totalParkArea}대 주차 가능"
             )
@@ -84,15 +78,13 @@ internal fun LazyListScope.RestStopFuelBody(
                 )
             }
         }
-    }
-    item {
         Column(
             modifier = Modifier
                 .padding(horizontal = 20.dp)
                 .padding(bottom = 60.dp)
         ) {
             Text(
-                text = "${restStop.updateDate.fullFormat()} 업데이트",
+                text = "${restStop.updateDate} 업데이트",
                 style = Typo.SmallM12,
                 color = Colors.Blk30
             )
@@ -111,10 +103,10 @@ internal fun LazyListScope.RestStopFuelBody(
 private fun RowScope.RestStopFuelItem(
     modifier: Modifier = Modifier,
     title: String,
-    price: Int,
-    postFix: String = "원"
+    price: Any?,
+    postFix: String = ""
 ) {
-    if (price < 1) return
+    if (price == null) return
     Column(
         modifier = modifier
             .weight(1f)
@@ -132,7 +124,7 @@ private fun RowScope.RestStopFuelItem(
             color = Colors.Blk60
         )
         Text(
-            text = "${price.toMoneyFormat()}$postFix",
+            text = "${if (price is Int) price.toMoneyFormat() else price}$postFix",
             style = Typo.HeadB18,
             color = Colors.Blk100
         )
@@ -179,7 +171,7 @@ private fun RestStopFuelItemPreview() {
         Row {
             RestStopFuelItem(
                 title = "휘발유",
-                price = 1234
+                price = "1,2345"
             )
         }
     }

@@ -30,5 +30,9 @@ data class Property(
     @SerializedName("name")
     val name: String,
     @SerializedName("roadType")
-    val roadType: Int
+    val roadType: Int,
+    @SerializedName("departIdx")
+    val departIdx: Int?,
+    @SerializedName("destIdx")
+    val destIdx: Int?
 )

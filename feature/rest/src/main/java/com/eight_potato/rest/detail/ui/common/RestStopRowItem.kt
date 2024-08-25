@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.eight_potato.designsystem.theme.Colors
 import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.rest.model.BrandUiModel
@@ -35,16 +36,15 @@ internal fun RestStopRowItem(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         contentPadding = PaddingValues(horizontal = 20.dp)
     ) {
-        items(items = brands, key = { it.id }) {
+        items(items = brands, key = { it.name }) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
+                AsyncImage(
                     modifier = Modifier
                         .size(80.dp)
-                        .aspectRatio(1f)
-                        .clip(CircleShape),
-                    painter = painterResource(id = com.eight_potato.designsystem.R.drawable.test),
+                        .aspectRatio(1f),
+                    model = it.image,
                     contentDescription = "",
                     contentScale = ContentScale.Crop
                 )

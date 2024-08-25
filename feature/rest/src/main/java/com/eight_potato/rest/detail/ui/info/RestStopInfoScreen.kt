@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +28,7 @@ import com.eight_potato.rest.R
 import com.eight_potato.rest.detail.ui.common.RestStopContainer
 import com.eight_potato.rest.detail.ui.common.RestStopHeader
 import com.eight_potato.rest.detail.ui.common.RestStopRowItem
+import com.eight_potato.rest.model.DetailRestStopUiModel
 import com.eight_potato.rest.model.OperatingTimeUiModel
 import com.eight_potato.rest.model.RestStopUiModel
 import com.eight_potato.ui.util.AnnotatedTextBuilder
@@ -33,72 +36,69 @@ import com.eight_potato.ui.util.AnnotatedTextBuilder
 /**
  * 휴게소 정보 화면
  */
-internal fun LazyListScope.RestStopInfoScreen(
-    restStop: RestStopUiModel,
+@Composable
+internal fun RestStopInfoScreen(
+    restStop: DetailRestStopUiModel,
     onCopyAddress: () -> Unit
 ) {
-    item {
-        RestStopContainer {
-            RestStopHeader(icon = R.drawable.ic_star, title = "영업시간")
-            Spacer(modifier = Modifier.height(32.dp))
-            Column(
-                verticalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                restStop.operatingTime.forEach {
-                    RestStopOperatingTimeItem(operatingTime = it)
+    Column (
+        modifier = Modifier.verticalScroll(rememberScrollState())
+    ){
+        if (restStop.operatingTime.isNotEmpty()) {
+            RestStopContainer {
+                RestStopHeader(icon = R.drawable.ic_time, title = "영업시간")
+                Spacer(modifier = Modifier.height(32.dp))
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                ) {
+                    restStop.operatingTime.forEach {
+                        RestStopOperatingTimeItem(operatingTime = it)
+                    }
                 }
             }
-        }
-    }
-    item {
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .background(Colors.Blk5)
-        )
-    }
-    item {
-        Column(modifier = Modifier.padding(vertical = 40.dp)) {
-            RestStopHeader(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                icon = R.drawable.ic_star,
-                title = "입점 브랜드"
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+                    .background(Colors.Blk5)
             )
-            Spacer(modifier = Modifier.height(32.dp))
-            RestStopRowItem(brands = restStop.brands)
         }
-    }
-    item {
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .background(Colors.Blk5)
-        )
-    }
-    item {
-        Column(modifier = Modifier.padding(vertical = 40.dp)) {
-            RestStopHeader(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                icon = R.drawable.ic_star,
-                title = "편의시설"
+        if (restStop.brands.isNotEmpty()) {
+            Column(modifier = Modifier.padding(vertical = 40.dp)) {
+                RestStopHeader(
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    icon = R.drawable.ic_brand,
+                    title = "입점 브랜드"
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+                RestStopRowItem(brands = restStop.brands)
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+                    .background(Colors.Blk5)
             )
-            Spacer(modifier = Modifier.height(32.dp))
-            RestStopRowItem(brands = restStop.amenities)
         }
-    }
-    item {
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .background(Colors.Blk5)
-        )
-    }
-    item {
+        if (restStop.amenities.isNotEmpty()) {
+            Column(modifier = Modifier.padding(vertical = 40.dp)) {
+                RestStopHeader(
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    icon = R.drawable.ic_facility,
+                    title = "편의시설"
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+                RestStopRowItem(brands = restStop.amenities)
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+                    .background(Colors.Blk5)
+            )
+        }
         RestStopContainer {
-            RestStopHeader(icon = R.drawable.ic_star, title = "기타 정보")
+            RestStopHeader(icon = R.drawable.ic_info, title = "기타 정보")
             Spacer(modifier = Modifier.height(32.dp))
             RestStopExtraInfo(
                 icon = com.eight_potato.designsystem.R.drawable.ic_end,
@@ -119,8 +119,6 @@ internal fun LazyListScope.RestStopInfoScreen(
                 text = restStop.callNumber
             )
         }
-    }
-    item {
         Column(
             modifier = Modifier
                 .padding(horizontal = 20.dp)
@@ -161,7 +159,7 @@ private fun RestStopOperatingTimeItem(
             color = Colors.Blk60
         )
         Text(
-            text = "${operatingTime.startTime} - ${operatingTime.endTime}",
+            text = operatingTime.operatingTime,
             style = Typo.BodySB16,
             color = Colors.Blk100
         )

@@ -1,6 +1,7 @@
 package com.eight_potato.rest.detail.ui.common
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -39,7 +40,7 @@ internal fun RestStopHeader(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
+        Image(
             modifier = Modifier.size(24.dp),
             painter = painterResource(id = icon),
             contentDescription = ""

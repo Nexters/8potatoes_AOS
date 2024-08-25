@@ -1,9 +1,12 @@
 package com.eight_potato.rest.list
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eight_potato.domain.model.direction.HighwayModel
 import com.eight_potato.domain.usecase.direction.GetDirectionUseCase
+import com.eight_potato.domain.usecase.reststop.GetRestStopsUseCase
+import com.eight_potato.rest.model.RestStopUiModel
+import com.eight_potato.rest.model.toUiModel
 import com.eight_potato.ui.model.address.AddressUiModel
 import com.eight_potato.ui.model.address.PoiUiModel
 import com.eight_potato.ui.model.address.toModel
@@ -20,10 +23,14 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RestListViewModel @Inject constructor(
-    private val getDirectionUseCase: GetDirectionUseCase
+    private val getDirectionUseCase: GetDirectionUseCase,
+    private val getRestStopsUseCase: GetRestStopsUseCase
 ) : ViewModel() {
     private val _path = MutableStateFlow<List<PoiUiModel>>(emptyList())
     val path: StateFlow<List<PoiUiModel>> = _path.asStateFlow()
+
+    private val _restStops = MutableStateFlow<List<RestStopUiModel>>(emptyList())
+    val restStops: StateFlow<List<RestStopUiModel>> = _restStops.asStateFlow()
 
     fun getDirection(
         start: AddressUiModel?,
@@ -36,8 +43,26 @@ class RestListViewModel @Inject constructor(
                 start = startPoi.toModel(),
                 end = endPoi.toModel()
             ).onSuccess {
-                println(it)
                 _path.value = it.path.map { poi -> poi.toUiModel() }
+                getRestStops(startPoi, endPoi, it.highways)
+            }.onFailure {
+                println(it)
+            }
+        }
+    }
+
+    private fun getRestStops(
+        from: PoiUiModel,
+        to: PoiUiModel,
+        highways: List<HighwayModel>
+    ) {
+        viewModelScope.launch {
+            getRestStopsUseCase(
+                from = from.toModel(),
+                to = to.toModel(),
+                highways = highways
+            ).onSuccess {
+                _restStops.value = it.map { restStop -> restStop.toUiModel() }
             }.onFailure {
                 println(it)
             }

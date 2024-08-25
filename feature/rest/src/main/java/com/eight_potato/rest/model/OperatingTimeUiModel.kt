@@ -1,5 +1,7 @@
 package com.eight_potato.rest.model
 
+import com.eight_potato.domain.model.reststop.RestaurantModel
+
 /**
  * 휴게소 영업시간 정보
  * @param name 영업시간 이름
@@ -8,15 +10,8 @@ package com.eight_potato.rest.model
  */
 data class OperatingTimeUiModel(
     val name: String,
-    val startTime: String,
-    val endTime: String
+    val operatingTime: String
 )
 
-
-val TEST_OPERATING = (0..7).map {
-    OperatingTimeUiModel(
-        name = "월요일",
-        startTime = "09:00",
-        endTime = "24:00"
-    )
-}
+fun RestaurantModel.toUiModel() =
+    OperatingTimeUiModel(name, operatingTime)

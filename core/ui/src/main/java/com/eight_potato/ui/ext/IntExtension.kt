@@ -24,6 +24,11 @@ fun Int.pxToDp(context: Context): Float {
     return this / (density / DisplayMetrics.DENSITY_DEFAULT)
 }
 
+fun Int.spToPx(context: Context): Int {
+    val density = context.resources.displayMetrics.scaledDensity
+    return (this * density).roundToInt()
+}
+
 /**
  * Integer 를 String 으로 변경하면서 0 채우기
  */

@@ -25,7 +25,6 @@ import com.eight_potato.ui.ext.dpToPx
 import com.eight_potato.ui.ext.toMoneyFormat
 import com.eight_potato.ui.model.menu.MenuType
 import com.eight_potato.ui.model.menu.MenuUiModel
-import com.eight_potato.ui.model.menu.TEST_MENU
 
 @Composable
 internal fun RestStopMenu(
@@ -138,13 +137,5 @@ private fun RestStopMenuItem(
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun RestStopMenuPreview() {
-    HyusikMatjuTheme {
-        RestStopMenu(category = MenuType.KOREAN, menu = TEST_MENU)
     }
 }

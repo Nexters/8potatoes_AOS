@@ -3,123 +3,144 @@ package com.eight_potato.rest.detail
 import android.content.Context
 import android.content.Intent
 import androidx.activity.viewModels
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.eight_potato.designsystem.theme.Colors
-import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.rest.detail.ui.common.RestSTopDetailTab
 import com.eight_potato.rest.detail.ui.common.RestStopDetailHeader
-import com.eight_potato.rest.detail.ui.common.RestStopHeader
 import com.eight_potato.rest.detail.ui.extra.RestStopFuelBody
 import com.eight_potato.rest.detail.ui.info.RestStopInfoScreen
 import com.eight_potato.rest.detail.ui.menu.RestStopMenuScreen
-import com.eight_potato.rest.model.RestStopUiModel
-import com.eight_potato.rest.model.TEST_REST_STOP
-import com.eight_potato.ui.R
 import com.eight_potato.ui.base.BaseActivity
+import com.eight_potato.ui.ext.dpToPx
+import com.eight_potato.ui.ext.pxToDp
+import com.eight_potato.ui.ext.spToPx
 import com.eight_potato.ui.header.SingleTextHeader
-import com.eight_potato.ui.model.menu.TEST_MENU
 import com.eight_potato.ui.toolbar.HyusikLargeTopAppBar
 import com.eight_potato.ui.toolbar.HyusikTopAppBarColors
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * 휴게소 상세 화면 Activity
  */
+@AndroidEntryPoint
 class RestStopDetailActivity : BaseActivity() {
     private val viewModel : RestStopDetailViewModel by viewModels()
 
     @Composable
     @OptIn(ExperimentalMaterial3Api::class)
     override fun Body() {
-        val restStop = TEST_REST_STOP.first()
+        val restStop = viewModel.restStop.collectAsState()
+        val recommendedMenus = viewModel.recommendedMenus.collectAsState()
         val topAppBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
         Scaffold (
             modifier = Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
             topBar = {
-                HyusikLargeTopAppBar(
-                    title = {
-                        RestStopDetailHeader(restStop = restStop)
-                    },
-                    smallTitle = {
-                        SingleTextHeader(
-                            title = restStop.name,
-                            onClickCloseButton = { finish() }
-                        )
-                    },
-                    colors = HyusikTopAppBarColors(
-                        containerColor = Colors.White,
-                        scrolledContainerColor = Colors.White,
-                        navigationIconContentColor = Colors.White,
-                        titleContentColor = Colors.Blk100,
-                        actionIconContentColor = Colors.Main100
-                    ),
-                    scrollBehavior = topAppBarScrollBehavior
-                )
-//                LargeTopAppBar(
-//                    scrollBehavior = topAppBarScrollBehavior,
-//                    title = {
-//                        RestStopDetailHeader(restStop = restStop)
-//                    },
-//                    navigationIcon = {
-//                        Icon(
-//                            modifier = Modifier
-//                                .padding(horizontal = 12.dp, vertical = 16.dp)
-//                                .size(32.dp)
-//                                .clickable { finish() },
-//                            painter = painterResource(id = R.drawable.ic_arrow_left),
-//                            contentDescription = "이전화면으로 이동"
-//                        )
-//                    }
-//                )
+                restStop.value?.let {
+                    HyusikLargeTopAppBar(
+                        title = {
+                            RestStopDetailHeader(restStop = it)
+                        },
+                        smallTitle = {
+                            SingleTextHeader(
+                                title = it.name,
+                                onClickCloseButton = { finish() }
+                            )
+                        },
+                        colors = HyusikTopAppBarColors(
+                            containerColor = Colors.White,
+                            scrolledContainerColor = Colors.White,
+                            navigationIconContentColor = Colors.White,
+                            titleContentColor = Colors.Blk100,
+                            actionIconContentColor = Colors.Main100
+                        ),
+                        scrollBehavior = topAppBarScrollBehavior
+                    )
+                }
             }
         ) { padding ->
             val currentTab = viewModel.currentTab.collectAsState()
             val clipboardManager = LocalClipboardManager.current
-            val currentMenuType = viewModel.currentMenuType.collectAsState()
-            val groupedMenus = TEST_MENU.groupBy { it.menuType }
 
-            Column {
+            val menuTypes = viewModel.menuTypes.collectAsState()
+            val currentMenuType = viewModel.currentMenuType.collectAsState()
+            val groupedMenus = viewModel.groupedMenus.collectAsState()
+
+            val menuScrollState = rememberLazyListState()
+
+            LaunchedEffect(key1 = currentMenuType.value) {
+                if (viewModel.isChangedByTabSelect) {
+                    val currentMenuTypePosition = menuTypes.value.indexOf(currentMenuType.value)
+                    menuScrollState.animateScrollToItem(
+                        currentMenuTypePosition + 2,
+                        - (116).dpToPx(this@RestStopDetailActivity) - (14).spToPx(this@RestStopDetailActivity)
+                    )
+                }
+            }
+
+            LaunchedEffect(key1 = menuScrollState.firstVisibleItemIndex) {
+                if (viewModel.isChangedByTabSelect.not()) {
+                    if (menuScrollState.firstVisibleItemIndex > 1) {
+                        viewModel.changeMenuType(
+                            menuTypes.value.get(menuScrollState.firstVisibleItemIndex - 2),
+                            false
+                        )
+                    }
+                } else {
+                    viewModel.isChangedByTabSelect = false
+                }
+            }
+
+            Column (
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize()
+            ) {
                 RestSTopDetailTab(
                     currentTab = currentTab.value,
                     onClickTab = viewModel::changeTab
                 )
-                LazyColumn(
-                    modifier = Modifier.padding(padding)
-                ) {
+                restStop.value?.let {
                     when (currentTab.value) {
                         RestStopTab.MENU -> {
                             RestStopMenuScreen(
-                                menu = TEST_MENU.first(),
-                                menus = groupedMenus,
-                                restStop = restStop,
+                                scrollState = menuScrollState,
+                                menu = recommendedMenus.value,
+                                menuTypes = menuTypes.value,
+                                menus = groupedMenus.value,
+                                restStop = it,
                                 currentMenuType = currentMenuType.value,
-                                onClickMenuTab = viewModel::changeMenuType
+                                onClickMenuTab = {
+                                    viewModel.changeMenuType(it, true)
+                                }
                             )
                         }
 
-                        RestStopTab.EXTRA -> RestStopFuelBody(restStop = restStop)
+                        RestStopTab.EXTRA -> RestStopFuelBody(restStop = it)
                         RestStopTab.INFO -> RestStopInfoScreen(
-                            restStop = restStop,
+                            restStop = it,
                             onCopyAddress = {
-                                clipboardManager.setText(AnnotatedString(restStop.address))
+                                clipboardManager.setText(AnnotatedString(it.address))
                             }
                         )
                     }
@@ -129,7 +150,7 @@ class RestStopDetailActivity : BaseActivity() {
     }
 
     companion object {
-        const val REST_STOP_ARGS = "restStop"
+        const val REST_STOP_ARGS = "restStopCode"
 
         enum class RestStopTab(
             val text: String
@@ -141,9 +162,9 @@ class RestStopDetailActivity : BaseActivity() {
 
         fun getIntent(
             context: Context,
-            restStop: RestStopUiModel
+            restStopCode: String
         ) = Intent(context, RestStopDetailActivity::class.java).apply {
-            putExtra(REST_STOP_ARGS, restStop)
+            putExtra(REST_STOP_ARGS, restStopCode)
         }
     }
 }

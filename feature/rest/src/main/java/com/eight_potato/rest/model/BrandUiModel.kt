@@ -1,15 +1,10 @@
 package com.eight_potato.rest.model
 
+import com.eight_potato.domain.model.reststop.BrandModel
+
 data class BrandUiModel(
-    override val id: String,
-    override val image: String,
-    override val name: String
+    override val name: String,
+    override val image: String
 ) : RowItem
 
-val TEST_BRAND = (0..5).map {
-    BrandUiModel(
-        id = "$it",
-        image = "",
-        name = "브랜드$it"
-    )
-}
+fun BrandModel.toUiModel() = BrandUiModel(brandName, brandLogoUrl)

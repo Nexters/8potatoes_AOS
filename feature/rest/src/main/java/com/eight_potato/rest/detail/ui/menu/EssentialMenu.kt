@@ -28,11 +28,12 @@ import com.eight_potato.designsystem.theme.Colors
 import com.eight_potato.designsystem.theme.Typo
 import com.eight_potato.ui.ext.toMoneyFormat
 import com.eight_potato.ui.model.menu.MenuUiModel
+import com.eight_potato.ui.model.menu.RecommendMenuUIModel
 
 @Composable
 internal fun EssentialMenu(
     modifier: Modifier = Modifier,
-    menu: MenuUiModel
+    menu: List<RecommendMenuUIModel>
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -49,25 +50,25 @@ internal fun EssentialMenu(
                 .width(180.dp)
                 .aspectRatio(1f)
                 .clip(CircleShape),
-            model = "https://dev-malssami-bucket.s3.ap-northeast-2.amazonaws.com/assets/5d08fa872460fdee.png",
+            model = menu.first().menuImageUrl,
             contentDescription = "",
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "제철나물, 순창고추장을 넣어 고급스럽게 구성한",
+            text = menu.first().description,
             style = Typo.BodyM16,
             color = Colors.Blk40
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = menu.name,
+            text = menu.first().name,
             style = Typo.HeadB18,
             color = Colors.Blk100
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "${menu.price.toMoneyFormat()}원",
+            text = "${menu.first().price.toMoneyFormat()}원",
             style = Typo.BodySB16,
             color = Colors.Blk60
         )

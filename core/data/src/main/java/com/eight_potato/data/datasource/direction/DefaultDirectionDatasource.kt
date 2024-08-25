@@ -19,7 +19,7 @@ class DefaultDirectionDatasource @Inject constructor(
         end: PoiData
     ): Result<DirectionData> {
         return runCatching {
-            ApiCallUtil {
+            val result = ApiCallUtil {
                 tmapApi.getRoutes(
                     body = RouteRequest(
                         startX = start.lon,
@@ -28,7 +28,9 @@ class DefaultDirectionDatasource @Inject constructor(
                         endY = end.lat
                     )
                 )
-            }.toData()
+            }
+
+            result.toData()
         }
     }
 }

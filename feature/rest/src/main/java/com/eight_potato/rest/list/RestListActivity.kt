@@ -3,15 +3,9 @@ package com.eight_potato.rest.list
 import android.content.Context
 import android.content.Intent
 import androidx.activity.viewModels
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -24,10 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material.swipeable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,7 +40,6 @@ import com.eight_potato.rest.detail.RestStopDetailActivity
 import com.eight_potato.rest.list.ui.RestListBottomSheet
 import com.eight_potato.rest.list.ui.RestListHeader
 import com.eight_potato.rest.model.RestStopUiModel
-import com.eight_potato.rest.model.TEST_REST_STOP
 import com.eight_potato.ui.direction.DirectionActivity
 import com.eight_potato.ui.ext.dpToPx
 import com.eight_potato.ui.map.NaverMap
@@ -75,13 +64,16 @@ class RestListActivity : DirectionActivity() {
     private var naverMap: NaverMap? = null
     private val pathOverlay by lazy { PathOverlay() }
 
+    private var startMarker: Marker? = null
+    private var endMarker: Marker? = null
+
     // 86 , 48, 0
     @Composable
     override fun Body() {
         val start = viewModel.start.collectAsState()
         val end = viewModel.end.collectAsState()
         val path = restListViewModel.path.collectAsState()
-        val restStop = TEST_REST_STOP
+        val restStop = restListViewModel.restStops.collectAsState()
 
         val windowHeight = LocalConfiguration.current.screenHeightDp
         val currentBottomSheetHeightIndex = remember { mutableStateOf(0) }
@@ -106,13 +98,13 @@ class RestListActivity : DirectionActivity() {
             }
         }
 
-        LaunchedEffect(path.value) {
+        LaunchedEffect(path.value, restStop.value) {
             if (path.value.isNotEmpty()) {
                 setDirectionAndRest(
                     start = start.value,
                     end = end.value,
                     paths = path.value,
-                    restStops = emptyList()
+                    restStops = restStop.value
                 )
             }
         }
@@ -165,8 +157,8 @@ class RestListActivity : DirectionActivity() {
                             .fillMaxWidth()
                             .padding(vertical = 24.dp),
                         text = AnnotatedTextBuilder.generateTextWithStatus(
-                            text = "총 ${restStop.size}개의 휴게소를 들릴 수 있어요",
-                            highlightedText = "${restStop.size}개",
+                            text = "총 ${restStop.value.size}개의 휴게소를 들릴 수 있어요",
+                            highlightedText = "${restStop.value.size}개",
                             highlightColor = Colors.Main100
                         ),
                         textAlign = TextAlign.Center,
@@ -175,11 +167,11 @@ class RestListActivity : DirectionActivity() {
                 }
                 RestListBottomSheet(
                     modifier = Modifier.height(bottomSheetHeight),
+                    restStops = restStop.value,
                     onClickRestStop = {
                         startActivity(
-                            Intent(
-                                this@RestListActivity,
-                                RestStopDetailActivity::class.java
+                            RestStopDetailActivity.getIntent(
+                                this@RestListActivity, it.code
                             )
                         )
                     }
@@ -203,16 +195,19 @@ class RestListActivity : DirectionActivity() {
     ) {
         val startPoi = start?.poi?.toLatLng() ?: return
         val endPoi = end?.poi?.toLatLng() ?: return
+        startMarker?.map = null
+        endMarker?.map = null
+
         // 시작 위치 지정
         startPoi.let {
-            Marker().apply {
+            startMarker = Marker().apply {
                 position = it
                 icon = OverlayImage.fromResource(R.drawable.ic_start_journey)
             }.also { it.map = naverMap }
         }
         // 도착 위치 지정
         endPoi.let {
-            Marker().apply {
+            endMarker = Marker().apply {
                 position = it
                 icon = OverlayImage.fromResource(R.drawable.ic_end_journey)
             }.also { it.map = naverMap }
@@ -222,6 +217,17 @@ class RestListActivity : DirectionActivity() {
         // 카메라 위치 변경
         val bound = LatLngBounds(startPoi.toLatLng(), endPoi.toLatLng())
         naverMap?.moveCamera(CameraUpdate.fitBounds(bound, 120))
+
+//        restStops.forEach {
+//            val infoWindow = InfoWindow().apply {
+//                adapter = RestStopPointAdapter(this@RestListActivity, it)
+//            }
+//            val marker = Marker().apply {
+//                position = LatLng(it.location.lat, it.location.lon)
+//                map = naverMap
+//            }
+//            infoWindow.open(marker)
+//        }
     }
 
     companion object {
