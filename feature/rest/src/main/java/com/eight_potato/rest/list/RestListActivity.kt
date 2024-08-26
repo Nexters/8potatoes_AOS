@@ -2,6 +2,9 @@ package com.eight_potato.rest.list
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.PointF
+import android.view.LayoutInflater
+import android.view.View
 import androidx.activity.viewModels
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -39,6 +42,7 @@ import com.eight_potato.rest.R
 import com.eight_potato.rest.detail.RestStopDetailActivity
 import com.eight_potato.rest.list.ui.RestListBottomSheet
 import com.eight_potato.rest.list.ui.RestListHeader
+import com.eight_potato.rest.list.ui.RestStopPointView
 import com.eight_potato.rest.model.RestStopUiModel
 import com.eight_potato.ui.direction.DirectionActivity
 import com.eight_potato.ui.ext.dpToPx
@@ -50,6 +54,7 @@ import com.eight_potato.ui.util.AnnotatedTextBuilder
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
@@ -218,16 +223,18 @@ class RestListActivity : DirectionActivity() {
         val bound = LatLngBounds(startPoi.toLatLng(), endPoi.toLatLng())
         naverMap?.moveCamera(CameraUpdate.fitBounds(bound, 120))
 
-//        restStops.forEach {
-//            val infoWindow = InfoWindow().apply {
-//                adapter = RestStopPointAdapter(this@RestListActivity, it)
-//            }
-//            val marker = Marker().apply {
-//                position = LatLng(it.location.lat, it.location.lon)
-//                map = naverMap
-//            }
-//            infoWindow.open(marker)
-//        }
+        restStops.forEach {
+            val infoWindow = InfoWindow().apply {
+                adapter = object : InfoWindow.ViewAdapter() {
+                    override fun getView(infoWindow: InfoWindow): View {
+                        return RestStopPointView(this@RestListActivity, it.name, it.isRecommend)
+                    }
+                }
+            }
+            infoWindow.position = it.location.toLatLng()
+            infoWindow.anchor = PointF(0.5f, 0.5f)
+            naverMap?.run { infoWindow.open(this) }
+        }
     }
 
     companion object {
